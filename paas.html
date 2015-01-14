@@ -3,8 +3,50 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+<style type="text/css">
+    table{
+        padding: 0.2em;
+    }
+    td{
+        padding: 0.5em;
+    }
+    th{
+        font-weight: bold;
+    }
+</style>
 </head>
 <body>
-
+<table>
+    <tr>
+        <th colspan="2">Blood Pressure</th>
+    </tr>
+    <tr>
+        <td>Upper &#40;Systolic&#41;</td>
+        <td>
+            <svg height="50" width="300">
+                <g id="systolic"></g>
+            </svg>
+        </td>
+    </tr>
+    <tr>
+        <td>Lower &#40;Diastolic&#41;</td>
+        <td>
+            <svg height="50" width="300">
+                <g id="diastolic"></g>
+            </svg>
+        </td>
+    </tr>
+</table>
 </body>
+<script type="text/javascript" src="paas.js"></script>
+<script>
+    var systolic = new Measurement(80, 160, 100, 130, 135); // 120
+
+    var systolicSVG = new BoxAndDot("systolic", systolic, 300, 50);
+
+    var diastolic = new Measurement(50, 110, 60, 90, 95); // 80
+    // 0 100 50 70 75
+
+    var diastolicSVG = new BoxAndDot("diastolic", diastolic, 300, 50);
+</script>
 </html>
