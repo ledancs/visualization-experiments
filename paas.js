@@ -2,16 +2,6 @@
  * Created by andres on 1/14/15.
  */
 
-function Measurement(min, max, omin, omax, val){
-    this.min = min;
-    this.max = max;
-    this.val = val;
-    this.optimal ={
-        min: omin,
-        max: omax
-    };
-}
-
 function BoxAndDot (svgGroupId, measurement, width, height){
     this.measurement = measurement;
     this.svgGroup = document.getElementById(svgGroupId);
@@ -73,18 +63,20 @@ BoxAndDot.prototype.drawBox = function () {
 
 BoxAndDot.prototype.drawDot = function () {
     var dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    var radius = 5;
 
     var x = this.measurement.val - this.measurement.min;
     x *= this.SVGPointsPerUnitOfMeasurement;
 
     var y = this.height / 2;
     y += this.margin;
+    y -= radius/2;
 
     dot.setAttribute("cx", x.toString());
     dot.setAttribute("cy", y.toString());
-    dot.setAttribute("r", "5");
+    dot.setAttribute("r", radius.toString());
     dot.setAttribute("stroke", "black");
-    dot.setAttribute("stroke-width", "1.5");
+    dot.setAttribute("stroke-width", "2");
     dot.setAttribute("fill", "white");
 
     this.dot = dot;
