@@ -34,11 +34,11 @@
 <script type="text/javascript" src="measurement.js"></script>
 <script type="text/javascript" src="area-single.js"></script>
 <script>
-    var systolic = new Measurement("Systolic", 80, 160, 100, 130, 125, "mmHG"); // 120
-    var diastolic = new Measurement("Diastolic", 50, 110, 60, 90, 82, "mmHG"); // 80
+    var systolic = new Measurement("Systolic", 80, 160, 100, 130, 137, "mmHG"); // 120
+    var diastolic = new Measurement("Diastolic", 50, 110, 60, 90, 93, "mmHG"); // 80
     // 0 100 50 70 75
-    var weeklyActiveDays = new Measurement("Weekly Active Days", 0, 7, 2, 4, 3, "day(s)");
-    var stepsPerDay = new Measurement("Steps per Day", 0, 20000, 5000, 10000, 7000, "steps");
+    var weeklyActiveDays = new Measurement("Weekly Active Days", 0, 7, 2, 4, 1, "day(s)");
+    var stepsPerDay = new Measurement("Steps per Day", 0, 20000, 5000, 10000, 1552, "steps");
     var vis = new AreaSingle("container", [systolic, diastolic, weeklyActiveDays, stepsPerDay]);
 </script>
 </html>

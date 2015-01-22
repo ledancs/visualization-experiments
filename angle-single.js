@@ -41,7 +41,7 @@ AngleSingle.prototype.draw = function (){
     var y2 = centerY - Math.sin(Math.PI/2 - 0.2) * r3;
 
     this.addMinMaxLine(x1, y1, x2, y2, 4);
-    this.addMinMaxLabel(x1, y1 - 75, "max", -77);
+    this.addMinMaxLabel(x1, y1 - 75, "HIGH", -77);
 
     var wellnessAngle = Math.PI/7;
 
@@ -85,12 +85,14 @@ AngleSingle.prototype.draw = function (){
     y2 = centerY - Math.sin(-Math.PI/2 + 0.2) * r3;
 
     this.addMinMaxLine(x1, y1, x2, y2, 4);
-    this.addMinMaxLabel(x1 - 15, y1 + 70, "min", 77);
+    this.addMinMaxLabel(x1 - 15, y1 + 70, "LOW", 77);
 
     var measurement, scale, angle, line, dot;
 
     for(var i = 0; i < this.measurements.length; i ++){
         measurement = this.measurements[i];
+        // the angle goes from - radians to + radians so we multiply by 2 to get the full
+        // spectrum of the angle
         scale = (wellnessAngle * 2) / (measurement.optimal.max - measurement.optimal.min);
         angle = measurement.val - measurement.optimal.min;
         angle *= scale;

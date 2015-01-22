@@ -81,7 +81,7 @@ LengthSingle.prototype.draw = function (){
     this.addMinMaxLine(svgWidth - 15, height);
 
     //this.addMinMaxLabel(10, (height/2) - 5, "min");
-    this.addMinMaxLabel(svgWidth - 20, (height/2) - 5, "max");
+    this.addMinMaxLabel(svgWidth - 20, (height/2) - 5, "HIGH");
 
 };
 
@@ -112,7 +112,7 @@ LengthSingle.prototype.addMinMaxLabel = function (textX, textY, text) {
     rect.setAttribute("fill", "white");
     rect.setAttribute("x", x.toString());
     rect.setAttribute("y", y.toString());
-    rect.setAttribute("width", "50");
+    rect.setAttribute("width", "75");
     rect.setAttribute("height", "25");
     this.svg.appendChild(rect);
     rect.setAttribute("transform", "rotate(90 " + textX.toString() + " " + textY.toString() + ")");

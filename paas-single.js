@@ -3,7 +3,7 @@ function PaasSingle (svgGroupId, measurements, width, height){
     this.svg = document.getElementById(svgGroupId);
     this.width = parseFloat(this.svg.getAttribute("width"));
     this.height = parseFloat(this.svg.getAttribute("height"));
-    this.margin = 1;
+    this.margin = this.width/10;
     this.draw();
 }
 
@@ -21,21 +21,20 @@ PaasSingle.prototype.draw = function (){
     var svgHeight = parseFloat(this.svg.getAttribute("height"));
     // this.svg.setAttribute("height", svgHeight.toString());
     // this.svg.setAttribute("width", svgWidth.toString());
-    
+    var height = 80;
     var box = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     var x, x0;
-    x = x0 = svgWidth/3;
-    
-    var width = svgWidth/3;
-    
-    var y = 10;
-    var height = this.measurements.length * 50;
-    height += 25;
+    var width = svgWidth * 0.25;
+    x = x0 = (svgWidth - width)/2;
+
+    var y = 5;
+
+    var wellnessZoneHeight =  height * this.measurements.length + height/2;
 
     box.setAttribute("x", x.toString());
     box.setAttribute("y", y.toString());
     box.setAttribute("width", width.toString());
-    box.setAttribute("height", height.toString());
+    box.setAttribute("height", wellnessZoneHeight.toString());
 
     box.setAttribute("fill", "rgb(150, 150, 150)");
     box.setAttribute("opacity", "0.35");
@@ -48,10 +47,12 @@ PaasSingle.prototype.draw = function (){
     
     // for each measurement
     var scale = 1;
-    var dot, measurement;
+    var dot, measurement, line;
     var radius = 5;
+    var linePositionY = 25;
+    var length = this.width - this.margin;
     
-    y = 25;
+    y = height / 2;
     y += 10;
     y += radius/2;
     x = 0;
@@ -63,7 +64,18 @@ PaasSingle.prototype.draw = function (){
         x *= scale;
         x += x0;
         x -= radius/2;
-        
+
+        line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", this.margin.toString());
+
+        line.setAttribute("x2", length.toString());
+        linePositionY = y;
+        line.setAttribute("y1", linePositionY.toString());
+        line.setAttribute("y2", linePositionY.toString());
+        line.setAttribute("stroke", "black");
+        line.setAttribute("stroke-width", "2");
+        this.svg.appendChild(line);
+
         dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");    
 
         dot.setAttribute("cx", x.toString());
@@ -77,21 +89,21 @@ PaasSingle.prototype.draw = function (){
 
         this.addLabel(measurement, x + radius/2, y + radius/2);
 
-        y += 50;
+        y += height;
     }
 
-    this.addMinMaxLine(15, height);
-    this.addMinMaxLine(svgWidth - 15, height);
+    this.addMinMaxLine(this.margin, height * this.measurements.length + height/2);
+    this.addMinMaxLine(svgWidth - this.margin   ,  height * this.measurements.length + height/2);
 
-    this.addMinMaxLabel(10, (height/2) - 5, "min");
-    this.addMinMaxLabel(svgWidth - 20, (height/2) - 5, "max");
+    this.addMinMaxLabel(this.margin - 25, ((height * this.measurements.length)/2) - 17, "LOW");
+    this.addMinMaxLabel(svgWidth - this.margin + 15, ((height * this.measurements.length)/2) - 15, "HIGH");
 
 };
 
 PaasSingle.prototype.addMinMaxLine = function (x, y) {
     var minLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
     minLine.setAttribute("x1", x.toString());
-    minLine.setAttribute("y1", "0");
+    minLine.setAttribute("y1", "10");
     minLine.setAttribute("x2", x.toString());
     minLine.setAttribute("y2", y.toString());
     minLine.setAttribute("stroke", "black");
@@ -104,21 +116,21 @@ PaasSingle.prototype.addMinMaxLabel = function (textX, textY, text) {
 
     minText.setAttribute("x", textX.toString());
     minText.setAttribute("y", textY.toString());
-    minText.setAttribute("font-size", "20");
+    minText.setAttribute("font-size", "21");
     var minTextNode = document.createTextNode(text);
     minText.appendChild(minTextNode);
     minText.setAttribute("transform", "rotate(90 " + textX.toString() + " " + textY.toString() + ")");
 
-    var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    /*var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     var x = textX - 5;
     var y = textY - 20;
     rect.setAttribute("fill", "white");
     rect.setAttribute("x", x.toString());
     rect.setAttribute("y", y.toString());
-    rect.setAttribute("width", "50");
+    rect.setAttribute("width", "60");
     rect.setAttribute("height", "25");
     this.svg.appendChild(rect);
-    rect.setAttribute("transform", "rotate(90 " + textX.toString() + " " + textY.toString() + ")");
+    rect.setAttribute("transform", "rotate(90 " + textX.toString() + " " + textY.toString() + ")");*/
     this.svg.appendChild(minText);
 };
 
@@ -127,8 +139,8 @@ PaasSingle.prototype.addLabel = function (measurement, dotX, dotY) {
 
     var fontSize = 15;
 
-    var x = dotX + fontSize;
-    var y = dotY + fontSize/5
+    var x = dotX - fontSize;
+    var y = dotY + fontSize * 1.35;
 
     newText.setAttribute("x", x.toString());
     newText.setAttribute("y", y.toString());
