@@ -28,7 +28,7 @@ AngleSingle.prototype.draw = function (){
     r2 = 450;
     r3 = 400;
 
-    var valRad0 = 75;
+    var valRad0 = 145;
     var valRad1 = 335;
 
     var centerX = svgWidth/6;
@@ -87,7 +87,7 @@ AngleSingle.prototype.draw = function (){
     this.addMinMaxLine(x1, y1, x2, y2, 4);
     this.addMinMaxLabel(x1 - 15, y1 + 70, "min", 77);
 
-    var measurement, scale, angle, line;
+    var measurement, scale, angle, line, dot;
 
     for(var i = 0; i < this.measurements.length; i ++){
         measurement = this.measurements[i];
@@ -113,6 +113,16 @@ AngleSingle.prototype.draw = function (){
         line.setAttribute("stroke-width", "2");
 
         this.svg.appendChild(line);
+
+        dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        dot.setAttribute("cx", x2.toString());
+        dot.setAttribute("cy", y2.toString());
+        dot.setAttribute("r", "4");
+        dot.setAttribute("fill", "white");
+        dot.setAttribute("stroke", "black");
+        dot.setAttribute("stroke-width", "2");
+
+        this.svg.appendChild(dot);
 
         this.addLabel(measurement,
             centerX + Math.cos(angle) * valRad1 * 1.015 ,
@@ -152,7 +162,7 @@ AngleSingle.prototype.addMinMaxLabel = function (textX, textY, text, angle) {
     rect.setAttribute("y", y.toString());
     rect.setAttribute("width", "50");
     rect.setAttribute("height", "25");
-    this.svg.appendChild(rect);
+    // this.svg.appendChild(rect);
     rect.setAttribute("transform", "rotate(" + angle + " " + textX.toString() + " " + textY.toString() + ")");
     this.svg.appendChild(minText);
 };
@@ -169,7 +179,7 @@ AngleSingle.prototype.addLabel = function (measurement, dotX, dotY) {
     newText.setAttribute("y", y.toString());
     newText.setAttribute("font-size", fontSize.toString());
 
-    var textNode = document.createTextNode(measurement.label + ": " + measurement.val + " " + measurement.units);
+    var textNode = document.createTextNode(measurement.label + ": " + measurement.val.toString() + " " + measurement.units);
     newText.appendChild(textNode);
 
     this.svg.appendChild(newText);
