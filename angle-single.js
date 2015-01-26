@@ -117,7 +117,8 @@ AngleSingle.prototype.draw = function (){
             strokeWidth: 2
         });
 
-        /*circle = this.s.circle(x2, y2, 4).attr({
+        /*circle = this.s.circle(centerX + Math.cos(angle) * (valRad1 - 12),
+            centerY - Math.sin(angle) * (valRad1 - 12), 4).attr({
             fill: "white",
             stroke: "black",
             strokeWidth: 2
@@ -131,8 +132,10 @@ AngleSingle.prototype.addMinMaxLine = function (x1, y1, x2, y2) {
     var line = this.s.line(x1, y1, x2, y2);
     line.attr({
         stroke: "grey",
-        strokeWidth: 5
+        strokeWidth: 5,
+        strokeDasharray: "10 5"
     });
+    // check: http://svg.dabbles.info/snaptut-dasharray
 };
 
 AngleSingle.prototype.addMinMaxLabel = function (textX, textY, text, angle) {
