@@ -1,9 +1,9 @@
 function AngleSingle (svgGroupId, measurements){
     this.measurements = measurements;
-    this.svg = document.getElementById(svgGroupId);
-    this.width = parseFloat(this.svg.getAttribute("width"));
-    this.height = parseFloat(this.svg.getAttribute("height"));
-    this.margin = 1;
+    var svg = document.getElementById(svgGroupId);
+    this.height = parseFloat(svg.getAttribute("height"));
+    this.externalMargin = 7;
+    this.innerMargin = 2
     this.s = Snap("#" + svgGroupId);
     this.draw();
 }
@@ -18,8 +18,7 @@ AngleSingle.prototype.draw = function (){
     // an additional 50 for the top and bottom margins
     // var svgHeight = 2 * y + height;
     // var svgWidth = x0 * 2 + width;
-    // var svgWidth = parseFloat(this.svg.getAttribute("width"));
-    var svgHeight = parseFloat(this.svg.getAttribute("height"));
+
     // this.svg.setAttribute("height", svgHeight.toString());
     // this.svg.setAttribute("width", svgWidth.toString());
 
@@ -34,8 +33,8 @@ AngleSingle.prototype.draw = function (){
     var valRad0 = 140;
     var valRad1 = 185;
 
-    var centerX = 7;
-    var centerY = svgHeight - 7;
+    var centerX = this.externalMargin;
+    var centerY = this.height - this.externalMargin;
 
     var x1 = centerX + Math.cos(Math.PI/2 * 0.975) * r0;
     var y1 = centerY - Math.sin(Math.PI/2 * 0.975) * r0;
@@ -43,8 +42,8 @@ AngleSingle.prototype.draw = function (){
     var x2 = centerX + Math.cos(Math.PI/2 * 0.975) * r3;
     var y2 = centerY - Math.sin(Math.PI/2 * 0.975) * r3;
 
-    this.addMinMaxLine(x1 - 2, y1, x2 - 2, y2);
-    this.addMinMaxLabel(x2 - 2, y2, "HIGH", Math.PI/2 * 0.975);
+    this.addMinMaxLine(x1 - this.innerMargin, y1, x2 - this.innerMargin, y2);
+    this.addMinMaxLabel(x2 - this.innerMargin, y2, "HIGH", Math.PI/2 * 0.975);
 
     // PI divided by 12 means that this is the minimum step.
     // Half of those will not be used so we end up with 6 parts of PI
@@ -90,10 +89,10 @@ AngleSingle.prototype.draw = function (){
     x2 = centerX + Math.cos(0) * r3;
     y2 = centerY - Math.sin(0) * r3;
 
-    this.addMinMaxLine(x1, y1 + 2, x2, y2 + 2);
-    this.addMinMaxLabel(x2, y2 + 2, "LOW", 0);
+    this.addMinMaxLine(x1, y1 + this.innerMargin, x2, y2 + this.innerMargin);
+    this.addMinMaxLabel(x2, y2 + this.innerMargin, "LOW", 0);
 
-    var measurement, scale, angle, pointer, circle;
+    var measurement, scale, angle, pointer;
 
     for(var i = 0; i < this.measurements.length; i ++){
         measurement = this.measurements[i];
@@ -138,16 +137,17 @@ AngleSingle.prototype.addMinMaxLine = function (x1, y1, x2, y2) {
     // check: http://svg.dabbles.info/snaptut-dasharray
 };
 
-AngleSingle.prototype.addMinMaxLabel = function (textX, textY, text, angle) {
-    var tx = this.s.text(textX + 10, textY + 5, text);
+AngleSingle.prototype.addMinMaxLabel = function (x, y, text, angle) {
+    var tx = this.s.text(x + 10, y + 5, text);
     tx.attr({
         fontSize: "20px",
         fill: "grey"
     });
     var degrees = angle * (180/Math.PI);
     var t = Snap.matrix()
-        .rotate(-degrees, textX, textY);
+        .rotate(-degrees, x, y);
     tx.transform(t);
+    this.rotateText(angle, x, y, tx);
 };
 
 AngleSingle.prototype.addLabel = function (measurement, x, y, angle) {
@@ -156,6 +156,10 @@ AngleSingle.prototype.addLabel = function (measurement, x, y, angle) {
     tx.attr({
         fontSize: "15"
     });
+    this.rotateText(angle, x, y, tx);
+};
+
+AngleSingle.prototype.rotateText = function (angle, x, y, tx) {
     var degrees = angle * (180/Math.PI);
     var t = Snap.matrix()
         .rotate(-degrees, x, y);
