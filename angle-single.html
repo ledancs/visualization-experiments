@@ -6,11 +6,27 @@
     <style>
         div{
             float: left;
-            margin: 0.5em;
+            margin: 1.75em 0.75em;
             padding: 0;
         }
         svg{
             display: block;
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            font-family: sans-serif;
+        }
+        hr {
+            color: #abc;
+            background-color: #abc;
+            height: 5px;
+            border: 0;
+            padding: 0;
+            margin: 0;
+        }
+        h1 {
+            font-size: 1.25em;
         }
     </style>
 </head>
@@ -18,12 +34,20 @@
 
 <div>
     <h1>Blood Pressure</h1>
-    <svg id="BloodPressureContainer" width="450" height="350"></svg>
+    <hr />
+    <svg id="BloodPressureContainer" width="425" height="400"></svg>
 </div>
 
 <div>
-    <h1>Exercise</h1>
-    <svg id="ExerciseContainer" width="450" height="350"></svg>
+    <h1>Physical Activity</h1>
+    <hr />
+    <svg id="ExerciseContainer" width="425" height="400"></svg>
+</div>
+
+<div>
+    <h1>Body Composition</h1>
+    <hr />
+    <svg id="BodyCompositionContainer" width="425" height="400"></svg>
 </div>
 
 </body>
@@ -31,12 +55,17 @@
 <script type="text/javascript" src="snap.svg.js"></script>
 <script type="text/javascript" src="angle-single.js"></script>
 <script>
-    var systolic = new Measurement("Systolic", 80, 160, 100, 120, 130, "mmHG"); // 120
-    var diastolic = new Measurement("Diastolic", 50, 110, 60, 85, 90, "mmHG"); // 80
+    var systolic = new Measurement("Systolic", 80, 160, 100, 125, 137, "mmHG"); // 120
+    var diastolic = new Measurement("Diastolic", 50, 110, 60, 83, 88, "mmHG"); // 80
     var bloodPressureVis = new AngleSingle("BloodPressureContainer", [systolic, diastolic]);
 
-    var weeklyActiveDays = new Measurement("Weekly Active Days", 0, 7, 2, 5, 0, "");
-    var stepsPerDay = new Measurement("Steps per Day", 0, 20000, 4000, 10000, 2889, "");
+    var weeklyActiveDays = new Measurement("Weekly Active Days", 0, 7, 2.5, 4, 2, "");
+    var stepsPerDay = new Measurement("Steps per Day", 0, 20000, 6500, 10000, 4000, "");
     var ExerciseContainer = new AngleSingle("ExerciseContainer", [weeklyActiveDays, stepsPerDay]);
+
+    var bodyMassIndex = new Measurement("BMI", 15, 40, 18.5, 29.9, 33.2, "");
+    var waistDiameter = new Measurement("Waist Diameter", 10, 110, 20, 80, 106.7, "cm");
+    var fatPercentage = new Measurement("Fat", 10, 50, 23, 33.9, 35.2, "%");
+    var BodyCompositionContainer = new AngleSingle("BodyCompositionContainer", [bodyMassIndex, waistDiameter, fatPercentage]);
 </script>
 </html>

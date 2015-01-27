@@ -3,7 +3,7 @@ function AngleSingle (svgGroupId, measurements){
     var svg = document.getElementById(svgGroupId);
     this.height = parseFloat(svg.getAttribute("height"));
     this.externalMargin = 7;
-    this.innerMargin = 2
+    this.innerMargin = 2;
     this.s = Snap("#" + svgGroupId);
     this.draw();
 }
@@ -163,5 +163,6 @@ AngleSingle.prototype.rotateText = function (angle, x, y, tx) {
     var degrees = angle * (180/Math.PI);
     var t = Snap.matrix()
         .rotate(-degrees, x, y);
+
     tx.transform(t);
 };

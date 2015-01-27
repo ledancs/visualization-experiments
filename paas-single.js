@@ -36,8 +36,8 @@ PaasSingle.prototype.draw = function (){
     box.setAttribute("width", width.toString());
     box.setAttribute("height", wellnessZoneHeight.toString());
 
-    box.setAttribute("fill", "rgb(150, 150, 150)");
-    box.setAttribute("opacity", "0.35");
+    box.setAttribute("fill", "green");
+    box.setAttribute("opacity", "0.3");
     // box.setAttribute("stroke-width", "1");
     // box.setAttribute("stroke", "rgb(160, 160, 160)");
 
@@ -64,7 +64,7 @@ PaasSingle.prototype.draw = function (){
         x *= scale;
         x += x0;
         x -= radius/2;
-
+        /*
         line = document.createElementNS("http://www.w3.org/2000/svg", "line");
         line.setAttribute("x1", this.margin.toString());
 
@@ -75,6 +75,7 @@ PaasSingle.prototype.draw = function (){
         line.setAttribute("stroke", "black");
         line.setAttribute("stroke-width", "2");
         this.svg.appendChild(line);
+        */
 
         dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");    
 
