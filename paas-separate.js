@@ -1,0 +1,113 @@
+/**
+ * Created by andres on 1/27/15.
+ */
+function Paas (svgId, measurements, width, height){
+    this.measurements = measurements;
+    this.svg = document.getElementById(svgId);
+    this.width = parseFloat(this.svg.getAttribute("width"));
+    this.height = parseFloat(this.svg.getAttribute("height"));
+    this.margin = 7;
+    this.rowSize = 75;
+    this.s = Snap('#' + svgId);
+    this.draw();
+}
+
+Paas.prototype.draw = function (){
+
+    // draw the top margin
+    // 0 to 1000
+    // from 400 to 600 is the optimal area
+
+    // each measurement is 100 height
+    // an additional 50 for the top and bottom margins
+    // var svgHeight = 2 * y + height;
+    // var svgWidth = x0 * 2 + width;
+    var svgWidth = parseFloat(this.svg.getAttribute("width"));
+    // the wellness zone starts here
+    var wZoneHeight = this.rowSize * this.measurements.length;
+    var graphicWidth = 2 * (svgWidth/3); // the total width where we can plot
+    var wZoneWidth = graphicWidth/3 - this.margin;
+    var x0 = svgWidth/3; // the starting point of the visualization
+    x0 += this.margin; // remember to add the margin also here
+    var y0 = this.margin; // the same for the y axis
+    var wZoneX = x0 + graphicWidth/3; // we begin from x0
+    // then we add one third of the remaining width
+    // the wellness zone will be another third and
+    // the last third comes from the values that are higher than the recommended
+    // wZoneWidth *= 2;
+    var b = this.s.rect(wZoneX, y0, wZoneWidth, wZoneHeight);
+    b.attr({
+        fill: "green",
+        opacity: 0.3
+    });
+    // adjust the height of the SVG element
+    var svgHeight = wZoneHeight + 2 * this.margin;
+    this.svg.setAttribute("height", svgHeight.toString());
+    var measurement; // the iterator
+    var scale = 0; // the scale for each measurement
+
+    var x = 0; // longitudinal coordinate to plot the circle
+    var radius = 5; // the size of the radius of the circle
+    var y = this.margin + this.rowSize/2; // we have to add the margin to the y coordinate with half of the row size
+    // to place the circle in the middle of the space
+    y += radius/2; // and we need also to add half of the radius to keep the circle in the middle
+    var circle; // the circle that represents the value of the measurement in the plot
+    var label; // really the value only and perhaps the units
+    var measurementName; // the name of the measurement
+    for(var i = 0; i < this.measurements.length; i ++){
+        measurement = this.measurements[i];
+        // add the label first
+        var measurementName = this.s.text(this.margin, y, measurement.label);
+        measurementName.attr({
+            fontSize: "12px",
+            fill: "black"
+        });
+        scale = wZoneWidth / (measurement.optimal.max - measurement.optimal.min);
+        x = measurement.val - measurement.optimal.min;
+        x *= scale; // multiply by the scale
+        x += wZoneX; // add the wellness zone x coordinate
+        x -= radius/2;
+        circle = this.s.circle(x, y, radius);
+        circle.attr({
+            stroke: "black",
+            strokeWidth: 1.75,
+            fill: "white"
+        });
+        label = this.s.text(x - 3 * radius, y + 4 * radius , measurement.val + " " + measurement.units);
+        label.attr({
+            fontSize: "9.75px",
+            fill: "black"
+        });
+        y += this.rowSize;
+    }
+
+    // add low and high lines
+    var lowLine = this.s.line(x0 - this.margin, this.margin + 20,
+        x0 - this.margin, svgHeight - this.margin);
+    lowLine.attr({
+        stroke: "grey",
+        strokeWidth: 2,
+        strokeDasharray: "10 5"
+    });
+    // x0 includes already a margin
+    // wZoneWidth also includes the margin
+    // but not graphicWidth
+    var highLine = this.s.line(x0 + graphicWidth - 2 * this.margin, this.margin + 20,
+        x0 + graphicWidth - 2 * this.margin, svgHeight - this.margin);
+    highLine.attr({
+        stroke: "grey",
+        strokeWidth: 2.3,
+        strokeDasharray: "10 5"
+    });
+    // now we can add the LOW and HIGH legend
+    var lowLabel = this.s.text(x0 - 1.5 * this.margin, this.margin * 2.5, "LOW");
+    lowLabel.attr({
+        fontSize: "14px",
+        fill: "grey"
+    });
+    var highLabel = this.s.text(x0 + graphicWidth - 6.5 * this.margin, this.margin * 2.5, "HIGH");
+    highLabel.attr({
+        fontSize: "14px",
+        fill: "grey"
+    });
+};
