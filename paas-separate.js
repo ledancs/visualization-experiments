@@ -13,21 +13,11 @@ function Paas (svgId, measurements, width, height){
 }
 
 Paas.prototype.draw = function (){
-
-    // draw the top margin
-    // 0 to 1000
-    // from 400 to 600 is the optimal area
-
-    // each measurement is 100 height
-    // an additional 50 for the top and bottom margins
-    // var svgHeight = 2 * y + height;
-    // var svgWidth = x0 * 2 + width;
-    var svgWidth = parseFloat(this.svg.getAttribute("width"));
     // the wellness zone starts here
     var wZoneHeight = this.rowSize * this.measurements.length;
-    var graphicWidth = 2 * (svgWidth/3); // the total width where we can plot
+    var graphicWidth = 2 * (this.width/3); // the total width where we can plot
     var wZoneWidth = graphicWidth/3 - this.margin;
-    var x0 = svgWidth/3; // the starting point of the visualization
+    var x0 = this.width/3; // the starting point of the visualization
     x0 += this.margin; // remember to add the margin also here
     var y0 = this.margin; // the same for the y axis
     var wZoneX = x0 + graphicWidth/3; // we begin from x0
