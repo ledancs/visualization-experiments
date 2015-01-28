@@ -1,4 +1,4 @@
-function AngleSingle (svgGroupId, measurements){
+function Angle (svgGroupId, measurements){
     this.measurements = measurements;
     var svg = document.getElementById(svgGroupId);
     this.height = parseFloat(svg.getAttribute("height"));
@@ -8,7 +8,7 @@ function AngleSingle (svgGroupId, measurements){
     this.draw();
 }
 
-AngleSingle.prototype.draw = function (){
+Angle.prototype.draw = function (){
 
     // draw the top margin
     // 0 to 1000
@@ -127,7 +127,7 @@ AngleSingle.prototype.draw = function (){
     }
 };
 
-AngleSingle.prototype.addMinMaxLine = function (x1, y1, x2, y2) {
+Angle.prototype.addMinMaxLine = function (x1, y1, x2, y2) {
     var line = this.s.line(x1, y1, x2, y2);
     line.attr({
         stroke: "grey",
@@ -137,7 +137,7 @@ AngleSingle.prototype.addMinMaxLine = function (x1, y1, x2, y2) {
     // check: http://svg.dabbles.info/snaptut-dasharray
 };
 
-AngleSingle.prototype.addMinMaxLabel = function (x, y, text, angle) {
+Angle.prototype.addMinMaxLabel = function (x, y, text, angle) {
     var tx = this.s.text(x + 10, y + 5, text);
     tx.attr({
         fontSize: "20px",
@@ -150,7 +150,7 @@ AngleSingle.prototype.addMinMaxLabel = function (x, y, text, angle) {
     this.rotateText(angle, x, y, tx);
 };
 
-AngleSingle.prototype.addLabel = function (measurement, x, y, angle) {
+Angle.prototype.addLabel = function (measurement, x, y, angle) {
     var text = measurement.label + ": " + measurement.val.toString() + " " + measurement.units;
     var tx = this.s.text(x + 5, y + 5, text);
     tx.attr({
@@ -159,7 +159,7 @@ AngleSingle.prototype.addLabel = function (measurement, x, y, angle) {
     this.rotateText(angle, x, y, tx);
 };
 
-AngleSingle.prototype.rotateText = function (angle, x, y, tx) {
+Angle.prototype.rotateText = function (angle, x, y, tx) {
     var degrees = angle * (180/Math.PI);
     var t = Snap.matrix()
         .rotate(-degrees, x, y);

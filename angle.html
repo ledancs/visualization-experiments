@@ -55,17 +55,17 @@
 <script type="text/javascript" src="snap.svg.js"></script>
 <script type="text/javascript" src="angle.js"></script>
 <script>
-    var systolic = new Measurement("Systolic", 80, 160, 100, 125, 137, "mmHG"); // 120
-    var diastolic = new Measurement("Diastolic", 50, 110, 60, 83, 88, "mmHG"); // 80
-    var bloodPressureVis = new AngleSingle("BloodPressureContainer", [systolic, diastolic]);
+    var systolic = new Measurement("Systolic (Upper)", 100, 125, 137, "mmHG"); // 120
+    var diastolic = new Measurement("Diastolic (Lower)", 60, 83, 88, "mmHG"); // 80
+    var bloodPressureVis = new Angle("BloodPressureContainer", [systolic, diastolic]);
 
-    var weeklyActiveDays = new Measurement("Weekly Active Days", 0, 7, 2.5, 4, 2, "");
-    var stepsPerDay = new Measurement("Steps per Day", 0, 20000, 6500, 10000, 4000, "");
-    var ExerciseContainer = new AngleSingle("ExerciseContainer", [weeklyActiveDays, stepsPerDay]);
+    var weeklyActiveDays = new Measurement("Weekly Active Days", 2.5, 4, 2, "days");
+    var stepsPerDay = new Measurement("Steps per Day", 6500, 10000, 4000, "steps");
+    var ExerciseContainer = new Angle("ExerciseContainer", [weeklyActiveDays, stepsPerDay]);
 
-    var bodyMassIndex = new Measurement("BMI", 15, 40, 18.5, 29.9, 33.2, "");
-    var waistDiameter = new Measurement("Waist Diameter", 10, 110, 20, 80, 106.7, "cm");
-    var fatPercentage = new Measurement("Fat", 10, 50, 23, 33.9, 35.2, "%");
-    var BodyCompositionContainer = new AngleSingle("BodyCompositionContainer", [bodyMassIndex, waistDiameter, fatPercentage]);
+    var bodyMassIndex = new Measurement("Body Mass Index", 18.5, 29.9, 33.2, "BMI");
+    var waistDiameter = new Measurement("Waist Diameter", 20, 80, 106.7, "cm");
+    var fatPercentage = new Measurement("Fat Percentage", 23, 33.9, 35.2, "%");
+    var BodyCompositionContainer = new Angle("BodyCompositionContainer", [bodyMassIndex, waistDiameter, fatPercentage]);
 </script>
 </html>

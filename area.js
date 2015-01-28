@@ -130,9 +130,9 @@ Area.prototype.draw = function (){
 
         //labelY *= 0.1;
 
-        text = this.s.text(labelX - 25, labelY, measurement.label + " " + measurement.val + " " + measurement.units);
+        text = this.s.text(labelX - 30, labelY, measurement.label + " " + measurement.val + " " + measurement.units);
         text.attr({
-            fontSize: "15"
+            fontSize: "13"
         });
         joinY1 = (i % 2 == 0) ? labelY + 2: labelY - 13;
         joinY2 = (i % 2 == 0) ? y: y + h;
