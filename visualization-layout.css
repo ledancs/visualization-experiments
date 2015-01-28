@@ -1,0 +1,24 @@
+div{
+    float: left;
+    margin: 1.75em;
+    padding: 0;
+}
+svg{
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+body{
+    font-family: sans-serif;
+}
+hr {
+    color: #abc;
+    background-color: #abc;
+    height: 5px;
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+h1 {
+    font-size: 1.15em;
+}
