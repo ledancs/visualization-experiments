@@ -1,7 +1,7 @@
 /**
  * Created by andres on 1/27/15.
  */
-function Paas (svgId, measurements, width, height){
+function Position (svgId, measurements, width, height){
     this.measurements = measurements;
     this.svg = document.getElementById(svgId);
     this.width = parseFloat(this.svg.getAttribute("width"));
@@ -12,7 +12,7 @@ function Paas (svgId, measurements, width, height){
     this.draw();
 }
 
-Paas.prototype.draw = function (){
+Position.prototype.draw = function (){
     // the wellness zone starts here
     var wZoneHeight = this.rowSize * this.measurements.length;
     var graphicWidth = 2 * (this.width/3); // the total width where we can plot
