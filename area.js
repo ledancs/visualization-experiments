@@ -90,6 +90,8 @@ Area.prototype.draw = function (){
     // c is the same for any rectangle created with these proportions
     // the width is the coefficient times the total area
     var measurement, scale, area, h, b, x, y, r, graphicalValue;
+    // we are using a line to join the label to the figures to avoid overlapping
+    var labelX, labelY, text, joinY1, joinY2, join;
     for(var i = 0; i < this.measurements.length; i ++){
         // begin
         measurement = this.measurements[i];
@@ -123,21 +125,21 @@ Area.prototype.draw = function (){
         });
 
         // start by placing the labels in the center and in one side, either left or right
-        var labelX = (i % 3 == 0) ? x + b * 0.65: x + b * 0.015;
-        var labelY = (i % 2 == 0) ? y - 25: y + h + 29;
+        labelX = (i % 3 == 0) ? x + b * 0.65: x + b * 0.015;
+        labelY = (i % 2 == 0) ? y - 25: y + h + 29;
 
         //labelY *= 0.1;
 
-        var text = this.s.text(labelX - 25, labelY, measurement.label + " " + measurement.val + " " + measurement.units);
+        text = this.s.text(labelX - 25, labelY, measurement.label + " " + measurement.val + " " + measurement.units);
         text.attr({
-            fontSize: "14"
+            fontSize: "15"
         });
-        var joinY1 = (i % 2 == 0) ? labelY + 2: labelY - 13;
-        var joinY2 = (i % 2 == 0) ? y: y + h;
-        var join = this.s.line(labelX + 5, joinY1, labelX + 5, joinY2);
+        joinY1 = (i % 2 == 0) ? labelY + 2: labelY - 13;
+        joinY2 = (i % 2 == 0) ? y: y + h;
+        join = this.s.line(labelX + 5, joinY1, labelX + 5, joinY2);
         join.attr({
             stroke: "black",
-            strokeWidth: "1.25"
+            strokeWidth: "1.5"
         });
 
     }
