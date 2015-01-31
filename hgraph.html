@@ -17,7 +17,7 @@
 <body>
 
 <div>
-    <svg id="hgraphContainer" width="850" height="675"></svg>
+    <svg id="hgraphContainer" width="975" height="925" ></svg>
 </div>
 
 </body>
@@ -29,8 +29,8 @@
     var diastolic = new Measurement("Diastolic (Lower)", 60, 83, 88, "mmHG"); // 80
     var bloodPressureG = new GroupedMs("Blood Pressure", [systolic, diastolic]);
 
-    var weeklyActiveDays = new Measurement("Weekly Active Days", 2.5, 4, 2, "");
-    var stepsPerDay = new Measurement("Steps per Day", 6500, 10000, 4000, "");
+    var weeklyActiveDays = new Measurement("Weekly Active Days", 2.15, 4, 2, "");
+    var stepsPerDay = new Measurement("Steps per Day", 5750, 10000, 4885, "");
     var exerciseG = new GroupedMs("Exercise", [weeklyActiveDays, stepsPerDay]);
 
     var bodyMassIndex = new Measurement("Body Mass Index", 18.5, 29.9, 33.2, "BMI");
@@ -38,6 +38,6 @@
     var fatPercentage = new Measurement("Fat Percentage", 23, 33.9, 35.2, "%");
     var bodyCompositionG = new GroupedMs("Body Composition", [bodyMassIndex, waistDiameter, fatPercentage]);
 
-    var g = new hgraph("hgraphContainer", [bloodPressureG, exerciseG, bodyCompositionG]);
+    var g = new hgraph("hgraphContainer", [exerciseG, bodyCompositionG, exerciseG, exerciseG, bloodPressureG, bodyCompositionG, exerciseG]);
 </script>
 </html>

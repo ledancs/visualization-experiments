@@ -20,11 +20,11 @@ function hgraph(svgId, groupedMs){
     this.margin = 7;
     this.s = Snap('#' + svgId);
     // the wellness zone
-    this.r0 = this.width/6; // the smallest radius
-    this.r1 = this.width/4; // the next radius
+    this.r0 = this.width * 0.1; // the smallest radius
+    this.r1 = this.width * 0.165; // the next radius
     // the limit of the circle
-    this.r2 = this.width * 0.325;
-    this.r3 = this.width * 0.4; // where we place the category name
+    this.r2 = this.width * 0.215;
+    this.r3 = this.width * 0.41; // where we place the category name
     this.draw();
 }
 
@@ -44,7 +44,7 @@ hgraph.prototype.draw = function () {
 
     // now we divide the circle in as many measurements as we have
     // we can also start drawing the sections
-    var centerX = this.width * 0.45; // the center of the circle
+    var centerX = this.width * 0.5265; // the center of the circle
     var centerY = this.height * 0.45;
 
     /*this.s.circle(centerX, centerY, this.r1).attr({
@@ -75,6 +75,9 @@ hgraph.prototype.draw = function () {
     var wellnessZone, x1, x2, x3, x4, y1, y2, y3, y4, path;
     // labels
     var text, labelX, labelY, bbox, transformX, transformY, labelADelta0, labelADelta1, labelA;
+    // polygon points
+    var points = new Array();
+
     for (var i = 0; i < this.groupedMs.length; i ++){
         group = this.groupedMs[i].measurements; // assign the array of measurements
         // angle - delta
@@ -100,34 +103,15 @@ hgraph.prototype.draw = function () {
             // the difference or distance from the minimum optimal value
             valX = centerX + Math.cos(angle) * r; // the origin is the center of the circle
             valY = centerY - Math.sin(angle) * r; // for y it is the opposite since the top is 0 and the bottom is the height
-            circle = this.s.circle(valX, valY, 4);
-            circle.attr({
-                stroke: "black",
-                fill: "white",
-                strokeWidth: 2.5
-            });
-            // now the labels
-            // check:
-            // http://robsneuron.blogspot.fi/2013/11/svg-text-in-boxes-with-snapsvg.html
-            labelX = centerX + Math.cos(angle) * this.r2;
 
-            labelY = centerY - Math.sin(angle) * this.r2;
-            text = this.s.text(labelX, labelY, measurement.label + " " + measurement.val + " " + measurement.units);
-            text.attr({
-                fontSize: "10px"
+            // save the points for the polygon
+            points.push({
+                x: valX,
+                y: valY,
+                angle: angle,
+                measurement: measurement
             });
 
-            transformX = "0";
-            bbox = text.getBBox();
-            
-            if(Math.cos(angle) < 0){
-                transformX = "-" + bbox.width.toString();
-            }
-            transformY = "7";
-            if(Math.sin(angle) < 0){
-                transformY = "" + bbox.height.toString();
-            }
-            text.transform("t" + transformX + "," + transformY);
             angle += delta; // increase the angle to the next measurement
         }
         labelADelta1 = angle;
@@ -150,7 +134,7 @@ hgraph.prototype.draw = function () {
             fill: "green",
             opacity: "0.3",
             stroke: "white",
-            strokeWidth: 3
+            strokeWidth: 4
         });
 
         // label
@@ -158,21 +142,79 @@ hgraph.prototype.draw = function () {
         labelADelta1 -= delta/2;
         labelA = labelADelta0 + (labelADelta1 - labelADelta0) / 2;
         labelX = centerX + Math.cos(labelA) * this.r3;
-        labelY = centerY - Math.sin(labelA) * this.r3;
+        labelY = centerY - Math.sin(labelA) * (this.r3 * 0.825);
         text = this.s.text(labelX, labelY, this.groupedMs[i].name);
         text.attr({
-            fontSize: "17px"
+            fontSize: "15.5px"
+        });
+
+        bbox = text.getBBox();
+        transformX = "-" + (bbox.width * 0.15).toString();
+        if(Math.cos(labelA) < 0){
+            transformX = "-" + (bbox.width * 1.15).toString();
+        }
+        transformY = "" + (bbox.height * 2.5).toString();;
+        if(Math.sin(labelA) < 0){
+            transformY = "-" + (bbox.height * 1.75).toString();
+        }
+        text.transform("t" + transformX + "," + transformY);
+    }
+
+    // now we add the polygon, dots ( circles ), and labels
+    var point; // iterator
+    var polygonPoints = new Array();
+    for(var i = 0; i < points.length; i ++){
+        point = points[i];
+        polygonPoints.push(point.x);
+        polygonPoints.push(point.y);
+    }
+
+    // draw the polygon
+    this.s.polygon(polygonPoints).attr({
+        fill: "grey",
+        stroke: "none",
+        opacity: 0.35
+    });
+    this.s.polygon(polygonPoints).attr({
+        fill: "none",
+        stroke: "black",
+        strokeWidth: "1"
+    });
+
+
+    for(var i = 0; i < points.length; i ++){
+        point = points[i];
+        valX = point.x;
+        valY = point.y;
+        angle = point.angle;
+        measurement = point.measurement;
+
+        circle = this.s.circle(valX, valY, 4);
+        circle.attr({
+            stroke: "black",
+            fill: "white",
+            strokeWidth: 2
+        });
+        // now the labels
+        // check:
+        // http://robsneuron.blogspot.fi/2013/11/svg-text-in-boxes-with-snapsvg.html
+        labelX = centerX + Math.cos(angle) * this.r2;
+
+        labelY = centerY - Math.sin(angle) * this.r2;
+        text = this.s.text(labelX, labelY, measurement.label + " " + measurement.val + " " + measurement.units);
+        text.attr({
+            fontSize: "10px"
         });
 
         transformX = "0";
-        if(Math.cos(labelA) < 0){
-            bbox = text.getBBox();
+        bbox = text.getBBox();
+
+        if(Math.cos(angle) < 0){
             transformX = "-" + bbox.width.toString();
         }
         transformY = "7";
-        if(Math.sin(labelA) < 0){
-            bbox = text.getBBox();
-            transformY = "" + bbox.height.toString();
+        if(Math.sin(angle) < 0){
+            transformY = "-" + (bbox.height * 0.15).toString();
         }
         text.transform("t" + transformX + "," + transformY);
     }

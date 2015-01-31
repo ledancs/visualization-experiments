@@ -140,7 +140,7 @@ Angle.prototype.addMinMaxLine = function (x1, y1, x2, y2) {
 Angle.prototype.addMinMaxLabel = function (x, y, text, angle) {
     var tx = this.s.text(x + 10, y + 5, text);
     tx.attr({
-        fontSize: "20px",
+        fontSize: "15px",
         fill: "grey"
     });
     var degrees = angle * (180/Math.PI);
@@ -154,7 +154,7 @@ Angle.prototype.addLabel = function (measurement, x, y, angle) {
     var text = measurement.label + ": " + measurement.val.toString() + " " + measurement.units;
     var tx = this.s.text(x + 5, y + 5, text);
     tx.attr({
-        fontSize: "15"
+        fontSize: "11.7"
     });
     this.rotateText(angle, x, y, tx);
 };
