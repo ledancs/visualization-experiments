@@ -20,11 +20,11 @@ function hgraph(svgId, groupedMs){
     this.margin = 7;
     this.s = Snap('#' + svgId);
     // the wellness zone
-    this.r0 = this.width * 0.1; // the smallest radius
-    this.r1 = this.width * 0.165; // the next radius
+    this.r0 = this.width * 0.105; // the smallest radius
+    this.r1 = this.width * 0.185; // the next radius
     // the limit of the circle
-    this.r2 = this.width * 0.215;
-    this.r3 = this.width * 0.41; // where we place the category name
+    this.r2 = this.width * 0.23;
+    this.r3 = this.width * 0.43; // where we place the category name
     this.draw();
 }
 
@@ -44,8 +44,8 @@ hgraph.prototype.draw = function () {
 
     // now we divide the circle in as many measurements as we have
     // we can also start drawing the sections
-    var centerX = this.width * 0.5265; // the center of the circle
-    var centerY = this.height * 0.45;
+    var centerX = this.width * 0.5275; // the center of the circle
+    var centerY = this.height * 0.41;
 
     /*this.s.circle(centerX, centerY, this.r1).attr({
         stroke: "none",
@@ -134,7 +134,7 @@ hgraph.prototype.draw = function () {
             fill: "green",
             opacity: "0.3",
             stroke: "white",
-            strokeWidth: 4
+            strokeWidth: 5
         });
 
         // label
@@ -145,7 +145,7 @@ hgraph.prototype.draw = function () {
         labelY = centerY - Math.sin(labelA) * (this.r3 * 0.825);
         text = this.s.text(labelX, labelY, this.groupedMs[i].name);
         text.attr({
-            fontSize: "15.5px"
+            fontSize: "17.5px"
         });
 
         bbox = text.getBBox();
@@ -155,7 +155,7 @@ hgraph.prototype.draw = function () {
         }
         transformY = "" + (bbox.height * 2.5).toString();;
         if(Math.sin(labelA) < 0){
-            transformY = "-" + (bbox.height * 1.75).toString();
+            transformY = "-" + (bbox.height * 1.85).toString();
         }
         text.transform("t" + transformX + "," + transformY);
     }
@@ -203,18 +203,18 @@ hgraph.prototype.draw = function () {
         labelY = centerY - Math.sin(angle) * this.r2;
         text = this.s.text(labelX, labelY, measurement.label + " " + measurement.val + " " + measurement.units);
         text.attr({
-            fontSize: "10px"
+            fontSize: "12px"
         });
 
-        transformX = "0";
+        transformX = "-8";
         bbox = text.getBBox();
 
         if(Math.cos(angle) < 0){
             transformX = "-" + bbox.width.toString();
         }
-        transformY = "7";
+        transformY = "-5";
         if(Math.sin(angle) < 0){
-            transformY = "-" + (bbox.height * 0.15).toString();
+            transformY = "" + (bbox.height * 0.75).toString();
         }
         text.transform("t" + transformX + "," + transformY);
     }

@@ -13,11 +13,14 @@
         display: block;
         margin: auto;
     }
+    body{
+        font-family: sans-serif;
+    }
 </style>
 <body>
 
 <div>
-    <svg id="hgraphContainer" width="975" height="925" ></svg>
+    <svg id="hgraphContainer" width="950" height="750" ></svg>
 </div>
 
 </body>
@@ -36,8 +39,12 @@
     var bodyMassIndex = new Measurement("Body Mass Index", 18.5, 29.9, 33.2, "BMI");
     var waistDiameter = new Measurement("Waist Diameter", 20, 80, 106.7, "cm");
     var fatPercentage = new Measurement("Fat Percentage", 23, 33.9, 35.2, "%");
-    var bodyCompositionG = new GroupedMs("Body Composition", [bodyMassIndex, waistDiameter, fatPercentage]);
+    var bodyCompositionG = new GroupedMs("Body", [bodyMassIndex, waistDiameter, fatPercentage]);
 
-    var g = new hgraph("hgraphContainer", [exerciseG, bodyCompositionG, exerciseG, exerciseG, bloodPressureG, bodyCompositionG, exerciseG]);
+    var timeInBed = new Measurement("Time in Bed", 7, 9, 7, "hours");
+    var timeAsleep = new Measurement("Time Asleep", 6, 8, 5, "hours");
+    var sleepG = new GroupedMs("Sleep", [timeInBed, timeAsleep]);
+
+    var g = new hgraph("hgraphContainer", [exerciseG, bloodPressureG, bodyCompositionG, sleepG]);
 </script>
 </html>
