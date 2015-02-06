@@ -25,6 +25,24 @@
     <svg id="BodyCompositionContainer" width="425" height="400"></svg>
 </div>
 
+<div>
+    <h1>Sleep</h1>
+    <hr />
+    <svg id="SleepContainer" width="425" height="400"></svg>
+</div>
+
+<div>
+    <h1>Physical Fitness</h1>
+    <hr />
+    <svg id="PhysicalFitnessContainer" width="425" height="400"></svg>
+</div>
+
+<div>
+    <h1>Lab Tests</h1>
+    <hr />
+    <svg id="LabTestsContainer" width="425" height="400"></svg>
+</div>
+
 </body>
 <script type="text/javascript" src="measurement.js"></script>
 <script type="text/javascript" src="snap.svg.js"></script>
@@ -42,6 +60,24 @@
     var waistDiameter = new Measurement("Waist Diameter", 20, 80, 106.7, "cm");
     var fatPercentage = new Measurement("Fat Percentage", 23, 33.9, 35.2, "%");
     var BodyCompositionContainer = new Position("BodyCompositionContainer", [bodyMassIndex, waistDiameter, fatPercentage]);
+
+    var timeInBed = new Measurement("Time in Bed", 7, 9, 7, "hours");
+    var timeAsleep = new Measurement("Time Asleep", 6, 8, 5, "hours");
+    var sleepContainer = new Position("SleepContainer", [timeInBed, timeAsleep]);
+
+    var restingHeartRate = new Measurement("Resting Heart Rate", 72, 76, 73, "bpm");
+    var fitnessIndex = new Measurement("Fitness Index", 70, 89, 75, "");
+    var muscularForce = new Measurement("Muscular force", 40, 60, 30, "%");
+    var muscularEndurance = new Measurement("Muscular endurance", 50, 75, 50, "%");
+    var balance = new Measurement("Balance", 1, 4, 2, "");
+    var physicalFitnessContainer = new Position("PhysicalFitnessContainer", [restingHeartRate, fitnessIndex, muscularForce, muscularEndurance, balance]);
+
+    var fBGluc = new Measurement("fB-Gluc", 4, 6, 6.2, "mmol/l");
+    var cholesterol = new Measurement("Cholesterol", 0, 4.95, 6.15, "mmol/l");
+    var ldl = new Measurement("LDL", 0, 3, 3.7, "mmol/l");
+    var hdl = new Measurement("HDL", 0, 1, 1.2, "mmol/l");
+    var hemoglobin = new Measurement("Hemoglobine", 134, 167, 141, "gl/l");
+    var labTestsContainer = new Position("LabTestsContainer", [fBGluc, cholesterol, ldl, hdl, hemoglobin]);
 
 </script>
 </html>

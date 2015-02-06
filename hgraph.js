@@ -20,11 +20,11 @@ function hgraph(svgId, groupedMs){
     this.margin = 7;
     this.s = Snap('#' + svgId);
     // the wellness zone
-    this.r0 = this.width * 0.105; // the smallest radius
-    this.r1 = this.width * 0.185; // the next radius
+    this.r0 = this.width * 0.1; // the smallest radius
+    this.r1 = this.width * 0.195; // the next radius
     // the limit of the circle
-    this.r2 = this.width * 0.23;
-    this.r3 = this.width * 0.43; // where we place the category name
+    this.r2 = this.width * 0.19;
+    this.r3 = this.width * 0.415; // where we place the category name
     this.draw();
 }
 
@@ -44,8 +44,8 @@ hgraph.prototype.draw = function () {
 
     // now we divide the circle in as many measurements as we have
     // we can also start drawing the sections
-    var centerX = this.width * 0.5275; // the center of the circle
-    var centerY = this.height * 0.41;
+    var centerX = this.width * 0.525; // the center of the circle
+    var centerY = this.height * 0.475;
 
     /*this.s.circle(centerX, centerY, this.r1).attr({
         stroke: "none",
@@ -77,15 +77,15 @@ hgraph.prototype.draw = function () {
     var text, labelX, labelY, bbox, transformX, transformY, labelADelta0, labelADelta1, labelA;
     // polygon points
     var points = new Array();
-
+    var sectionSpace = 0.05; // space between the sections
     for (var i = 0; i < this.groupedMs.length; i ++){
         group = this.groupedMs[i].measurements; // assign the array of measurements
         // angle - delta
         // collect the values with this angle for the wellness section
-        x1 = centerX + Math.cos(angle - delta/2) * this.r0;
-        y1 = centerY - Math.sin(angle - delta/2) * this.r0;
-        x2 = centerX + Math.cos(angle - delta/2) * this.r1;
-        y2 = centerY - Math.sin(angle - delta/2) * this.r1;
+        x1 = centerX + Math.cos(angle - delta/2 + sectionSpace) * this.r0;
+        y1 = centerY - Math.sin(angle - delta/2 + sectionSpace) * this.r0;
+        x2 = centerX + Math.cos(angle - delta/2 + sectionSpace) * this.r1;
+        y2 = centerY - Math.sin(angle - delta/2 + sectionSpace) * this.r1;
 
         path = "M" + x1.toString() + ", " + y1.toString();
         path += " L " + x2.toString() + " " + y2.toString();
@@ -109,7 +109,8 @@ hgraph.prototype.draw = function () {
                 x: valX,
                 y: valY,
                 angle: angle,
-                measurement: measurement
+                measurement: measurement,
+                r: r
             });
 
             angle += delta; // increase the angle to the next measurement
@@ -117,10 +118,10 @@ hgraph.prototype.draw = function () {
         labelADelta1 = angle;
         // angle - delta
         // draw the wellness zone
-        x3 = centerX + Math.cos(angle - delta/2) * this.r0;
-        y3 = centerY - Math.sin(angle - delta/2) * this.r0;
-        x4 = centerX + Math.cos(angle - delta/2) * this.r1;
-        y4 = centerY - Math.sin(angle - delta/2) * this.r1;
+        x3 = centerX + Math.cos(angle - delta/2 - sectionSpace) * this.r0;
+        y3 = centerY - Math.sin(angle - delta/2 - sectionSpace) * this.r0;
+        x4 = centerX + Math.cos(angle - delta/2 - sectionSpace) * this.r1;
+        y4 = centerY - Math.sin(angle - delta/2 - sectionSpace) * this.r1;
 
         path += " " + x4.toString() + " " + y4.toString();
         path += " L " + x3.toString() + " " + y3.toString();
@@ -134,7 +135,7 @@ hgraph.prototype.draw = function () {
             fill: "green",
             opacity: "0.3",
             stroke: "white",
-            strokeWidth: 5
+            strokeWidth: 1
         });
 
         // label
@@ -145,13 +146,13 @@ hgraph.prototype.draw = function () {
         labelY = centerY - Math.sin(labelA) * (this.r3 * 0.825);
         text = this.s.text(labelX, labelY, this.groupedMs[i].name);
         text.attr({
-            fontSize: "17.5px"
+            fontSize: "19.5px"
         });
 
         bbox = text.getBBox();
         transformX = "-" + (bbox.width * 0.15).toString();
         if(Math.cos(labelA) < 0){
-            transformX = "-" + (bbox.width * 1.15).toString();
+            transformX = "-" + (bbox.width * 1.25).toString();
         }
         transformY = "" + (bbox.height * 2.5).toString();;
         if(Math.sin(labelA) < 0){
@@ -162,6 +163,7 @@ hgraph.prototype.draw = function () {
 
     // now we add the polygon, dots ( circles ), and labels
     var point; // iterator
+    var margin; // a small margin around the dot for the label
     var polygonPoints = new Array();
     for(var i = 0; i < points.length; i ++){
         point = points[i];
@@ -181,12 +183,14 @@ hgraph.prototype.draw = function () {
         strokeWidth: "1"
     });
 
-
+    var t; // the transformation variable
+    var labelR; // the radius of the label
     for(var i = 0; i < points.length; i ++){
         point = points[i];
         valX = point.x;
         valY = point.y;
         angle = point.angle;
+        r = point.r;
         measurement = point.measurement;
 
         circle = this.s.circle(valX, valY, 4);
@@ -198,25 +202,47 @@ hgraph.prototype.draw = function () {
         // now the labels
         // check:
         // http://robsneuron.blogspot.fi/2013/11/svg-text-in-boxes-with-snapsvg.html
-        labelX = centerX + Math.cos(angle) * this.r2;
+        labelR = r;
+        labelX = centerX + Math.cos(angle) * labelR;
+        labelY = centerY - Math.sin(angle) * labelR;
 
-        labelY = centerY - Math.sin(angle) * this.r2;
         text = this.s.text(labelX, labelY, measurement.label + " " + measurement.val + " " + measurement.units);
         text.attr({
-            fontSize: "12px"
+            fontSize: "11px"
         });
 
-        transformX = "-8";
+        margin = Math.cos(angle) * 24;
+
+        transformX = margin.toString();
         bbox = text.getBBox();
 
         if(Math.cos(angle) < 0){
-            transformX = "-" + bbox.width.toString();
+            transformX = "-" + (bbox.width + Math.abs(margin)).toString();
         }
-        transformY = "-5";
+
+        margin = Math.sin(angle) * 16;
+
+        transformY = "-" + margin.toString();
         if(Math.sin(angle) < 0){
-            transformY = "" + (bbox.height * 0.75).toString();
+            transformY = "" + (bbox.height + Math.abs(margin)).toString();
         }
         text.transform("t" + transformX + "," + transformY);
+        /*
+        if(Math.cos(angle) >= 0 && Math.sin(angle) >= 0){
+            text.transform("t15,0" + "r-20," + valX + "," + valY);
+        } else if(Math.cos(angle) > 0 && Math.sin(angle) < 0){
+            text.transform("t15," + (bbox.height - 3).toString() + "r20," + valX + "," + valY);
+        } else if(Math.cos(angle) < 0 && Math.sin(angle) > 0){
+            text.transform("t-" + (bbox.width + 10).toString() + ",-30r20");
+        } else if(Math.cos(angle) < 0 && Math.sin(angle) < 0){
+            text.transform("t-"
+                + (bbox.width + 10).toString()
+                + "," + (bbox.height + bbox.width * 0.15).toString()
+                + "r-20");
+        }
+        */
+        // t = Snap.matrix().rotate(-degrees, valX, valY);
+        // text.transform(t);
     }
 
 };
