@@ -21,10 +21,10 @@ function hgraph(svgId, groupedMs){
     this.s = Snap('#' + svgId);
     // the wellness zone
     this.r0 = this.width * 0.1; // the smallest radius
-    this.r1 = this.width * 0.195; // the next radius
+    this.r1 = this.width * 0.15; // the next radius
     // the limit of the circle
-    this.r2 = this.width * 0.19;
-    this.r3 = this.width * 0.415; // where we place the category name
+    this.r2 = this.width * 0.165;
+    this.r3 = this.width * 0.3; // where we place the category name
     this.draw();
 }
 
@@ -137,8 +137,8 @@ hgraph.prototype.draw = function () {
         });
 
         // label
-        labelADelta0 -= delta/2;
-        labelADelta1 -= delta/2;
+        labelADelta0 -= delta/2 - sectionSpace;
+        labelADelta1 -= delta/2 - sectionSpace;
         labelA = labelADelta0 + (labelADelta1 - labelADelta0) / 2;
         labelX = centerX + Math.cos(labelA) * this.r3;
         labelY = centerY - Math.sin(labelA) * (this.r3 * 0.825);
@@ -148,13 +148,13 @@ hgraph.prototype.draw = function () {
         });
 
         bbox = text.getBBox();
-        transformX = "-" + (bbox.width * 0.15).toString();
+        transformX = "-" + ((1 - Math.cos(labelA)) * 100).toString();
         if(Math.cos(labelA) < 0){
-            transformX = "-" + (bbox.width * 1.25).toString();
+            transformX = "-" + Math.abs( bbox.width - ( (1 + Math.cos(labelA)) * 75 ) ).toString();
         }
-        transformY = "" + (bbox.height * 2.5).toString();;
+        transformY = "" + (65 * Math.sin(labelA)).toString();
         if(Math.sin(labelA) < 0){
-            transformY = "-" + (bbox.height * 1.85).toString();
+            transformY = "-" + (bbox.height + Math.abs(Math.sin(labelA) * 15)).toString();
         }
         text.transform("t" + transformX + "," + transformY);
     }
@@ -194,6 +194,7 @@ hgraph.prototype.draw = function () {
     var gBoxX1, gBoxY1, gBoxX2, gBoxY2;
     for (var i = 0; i < this.groupedMs.length; i ++){
         group = this.groupedMs[i].measurements; // assign the array of measurements
+        labelR = 0; // reset the radius of the label
         for(var j = 0; j < group.length; j++) {
             measurement = group[j];
             graphicalElement = measurement.graphicalElement;
@@ -213,16 +214,16 @@ hgraph.prototype.draw = function () {
             // now the labels
             // check:
             // http://robsneuron.blogspot.fi/2013/11/svg-text-in-boxes-with-snapsvg.html
-            labelR = r;
+            labelR = Math.max(labelR, Math.max(r * 1.015, this.r2));
             labelX = centerX + Math.cos(angle) * labelR;
             labelY = centerY - Math.sin(angle) * labelR;
 
             text = this.s.text(labelX, labelY, measurement.label + " " + measurement.val + " " + measurement.units);
             text.attr({
-                fontSize: "11px"
+                fontSize: "10.75px"
             });
 
-            margin = Math.cos(angle) * 24;
+            margin = Math.cos(angle) * 5;
 
             transformX = margin.toString();
             bbox = text.getBBox();
@@ -231,7 +232,7 @@ hgraph.prototype.draw = function () {
                 transformX = "-" + (bbox.width + Math.abs(margin)).toString();
             }
 
-            margin = Math.sin(angle) * 16;
+            margin = Math.sin(angle) * 7;
 
             transformY = "-" + margin.toString();
             if (Math.sin(angle) < 0) {
@@ -242,6 +243,23 @@ hgraph.prototype.draw = function () {
                 bbox: bbox,
                 text: text
             };
+
+            // check if we need a line from the dot to the label
+            // less than the half of the middle point between the two radii
+            // that is the center of the wellness zone
+            if(r < this.r0 + (this.r1 - this.r0) * 0.65){
+                // draw the line from r to labelR
+                this.s.line(
+                    centerX + Math.cos(angle) * r * 1.05,
+                    centerY - Math.sin(angle) * r * 1.05,
+                    centerX + Math.cos(angle) * labelR,
+                    centerY - Math.sin(angle) * labelR).attr({
+                    stroke: "grey",
+                    strokeWidth: 1.25
+                });
+                console.log("line");
+            }
+
 
             /*
              if(Math.cos(angle) >= 0 && Math.sin(angle) >= 0){
@@ -256,13 +274,12 @@ hgraph.prototype.draw = function () {
              + "," + (bbox.height + bbox.width * 0.15).toString()
              + "r-20");
              }
-             */
-            // t = Snap.matrix().rotate(-degrees, valX, valY);
-            // text.transform(t);
+            var degrees = angle * (180/Math.PI);
+            t = Snap.matrix().rotate(-degrees, valX, valY);
+            text.transform(t);*/
         }
         // draw a square around the labels of the same category
-        console.log("" + this.groupedMs[i].name);
-
+        // console.log("" + this.groupedMs[i].name);
         // to determine the full area that is comprised of the labels
         for(var j = 0; j < group.length; j++) {
             measurement = group[j];
@@ -271,7 +288,7 @@ hgraph.prototype.draw = function () {
             gBoxX2 = bbox.x + bbox.width;
             gBoxY1 = bbox.y - bbox.height;
             gBoxY2 = bbox.y;
-            console.log("x1 " + gBoxX1 + " | y1 " + gBoxY1 + " || x2 " + gBoxX2 + " | " + gBoxY2);
+            // console.log("x1 " + gBoxX1 + " | y1 " + gBoxY1 + " || x2 " + gBoxX2 + " | " + gBoxY2);
         }
 
     }

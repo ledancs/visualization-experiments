@@ -28,47 +28,47 @@
 <script type="text/javascript" src="snap.svg.js"></script>
 <script type="text/javascript" src="hgraph.js"></script>
 <script>
-    var systolic = new Measurement("Systolic", 100, 125, 137, "mmHG"); // 120
-    var diastolic = new Measurement("Diastolic", 60, 83, 88, "mmHG"); // 80
+    var systolic = new Measurement("Systolic", 100, 125, 135, "mmHG"); // 120
+    var diastolic = new Measurement("Diastolic", 60, 83, 86, "mmHG"); // 80
     var bloodPressureG = new GroupedMs("Blood Pressure", [systolic, diastolic]);
 
-    var restingHeartRate = new Measurement("Resting Heart Rate", 72, 76, 73, "bpm");
-    var fitnessIndex = new Measurement("Fitness Index", 70, 120, 75, "");
+    var restingHeartRate = new Measurement("Resting Heart Rate", 70, 76, 70, "bpm");
+    var fitnessIndex = new Measurement("Fitness Index", 70, 120, 90, "");
     var muscularForce = new Measurement("Muscular force", 40, 60, 37, "%");
     var muscularEndurance = new Measurement("Muscular endurance", 50, 75, 50, "%");
     var balance = new Measurement("Balance", 1, 4, 2, "");
     var physicalFitnessG = new GroupedMs("Fitness", [fitnessIndex, restingHeartRate, muscularForce, muscularEndurance, balance]);
 
-    var weeklyActiveDays = new Measurement("Weekly Active Days", 2.15, 4, 2, "");
-    var stepsPerDay = new Measurement("Steps per Day", 5750, 10000, 4885, "");
+    var weeklyActiveDays = new Measurement("Weekly Active Days", 2.15, 4, 4, "");
+    var stepsPerDay = new Measurement("Steps per Day", 6000, 10000, 8000, "");
     var exerciseG = new GroupedMs("Exercise", [weeklyActiveDays, stepsPerDay]);
 
-    var bodyMassIndex = new Measurement("Body Mass Index", 18.5, 29.9, 33.2, "BMI");
-    var waistDiameter = new Measurement("Waist Diameter", 20, 80, 106.7, "cm");
-    var fatPercentage = new Measurement("Fat Percentage", 23, 33.9, 35.2, "%");
+    var bodyMassIndex = new Measurement("Body Mass Index", 18.5, 29.9, 26, "BMI");
+    var waistDiameter = new Measurement("Waist Diameter", 20, 80, 78, "cm");
+    var fatPercentage = new Measurement("Fat Percentage", 23, 33.9, 32, "%");
     var bodyCompositionG = new GroupedMs("Body Composition", [bodyMassIndex, waistDiameter, fatPercentage]);
 
-    var timeInBed = new Measurement("Time in Bed", 7, 9, 7, "hours");
-    var timeAsleep = new Measurement("Time Asleep", 6, 8, 6, "hours");
+    var timeInBed = new Measurement("Time in Bed", 7, 9, 8, "hours");
+    var timeAsleep = new Measurement("Time Asleep", 6, 8, 5, "hours");
     var sleepG = new GroupedMs("Sleep", [timeInBed, timeAsleep]);
 
-    var fBGluc = new Measurement("fB-Gluc", 4, 6, 6.2, "mmol/l");
-    var cholesterol = new Measurement("Cholesterol", 0, 4.95, 6.15, "mmol/l");
-    var ldl = new Measurement("LDL", 0, 3, 3.7, "mmol/l");
+    var fBGluc = new Measurement("fB-Gluc", 4, 6, 5.8, "mmol/l");
+    var cholesterol = new Measurement("Cholesterol", 0, 4.95, 4.7, "mmol/l");
+    var ldl = new Measurement("LDL", 0, 3, 2.8, "mmol/l");
     var hdl = new Measurement("HDL", 0, 1, 1.2, "mmol/l");
     var hemoglobine = new Measurement("Hemoglobine", 134, 167, 141, "gl/l");
     var labTestsG = new GroupedMs("Lab Tests", [hemoglobine, fBGluc, cholesterol, ldl, hdl]);
 
     var tobacco = new Measurement("Tobacco", -5, 5, 0, "");
-    var alcohol = new Measurement("Alcohol", -8, 8, 12, "AUDIT");
+    var alcohol = new Measurement("Alcohol", -8, 8, 6, "AUDIT");
     var drugAbuse = new Measurement("Drug Abuse", -5, 5, 0, "");
     var medicationAbuse = new Measurement("Medication Abuse", -5, 5, 0, "");
     var drugsG = new GroupedMs("Drugs", [tobacco, alcohol, drugAbuse, medicationAbuse]);
 
-    var depression = new Measurement("Depression", -9, 9, 7, "");
-    var stressRecovery = new Measurement("Stress Recovery", 20, 70, 22, "");
-    var stressLevel = new Measurement("Stress Level", 0, 60, 47, "");
-    var optimism = new Measurement("Optimism", 14, 24, 11, "");
+    var depression = new Measurement("Depression", -9, 9, 11, "");
+    var stressRecovery = new Measurement("Stress Recovery", 20, 70, 35, "");
+    var stressLevel = new Measurement("Stress Level", 0, 60, 35, "");
+    var optimism = new Measurement("Optimism", 14, 24, 13, "");
     var emotionalG = new GroupedMs("Emotional wellbeing", [depression, stressRecovery, stressLevel, optimism]);
 
     var g = new hgraph("hgraphContainer", [exerciseG, bloodPressureG, bodyCompositionG, sleepG, physicalFitnessG, labTestsG, drugsG, emotionalG]);
