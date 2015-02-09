@@ -75,8 +75,7 @@ hgraph.prototype.draw = function () {
     var wellnessZone, x1, x2, x3, x4, y1, y2, y3, y4, path;
     // labels
     var text, labelX, labelY, bbox, transformX, transformY, labelADelta0, labelADelta1, labelA;
-    // polygon points
-    var points = new Array();
+
     var sectionSpace = 0.05; // space between the sections
     for (var i = 0; i < this.groupedMs.length; i ++){
         group = this.groupedMs[i].measurements; // assign the array of measurements
@@ -105,13 +104,12 @@ hgraph.prototype.draw = function () {
             valY = centerY - Math.sin(angle) * r; // for y it is the opposite since the top is 0 and the bottom is the height
 
             // save the points for the polygon
-            points.push({
+            measurement.graphicalElement = {
                 x: valX,
                 y: valY,
                 angle: angle,
-                measurement: measurement,
                 r: r
-            });
+            };
 
             angle += delta; // increase the angle to the next measurement
         }
@@ -162,13 +160,19 @@ hgraph.prototype.draw = function () {
     }
 
     // now we add the polygon, dots ( circles ), and labels
-    var point; // iterator
-    var margin; // a small margin around the dot for the label
+    var graphicalElement; // iterator
+
     var polygonPoints = new Array();
-    for(var i = 0; i < points.length; i ++){
-        point = points[i];
-        polygonPoints.push(point.x);
-        polygonPoints.push(point.y);
+    for (var i = 0; i < this.groupedMs.length; i ++){
+        group = this.groupedMs[i].measurements; // assign the array of measurements
+        for(var j = 0; j < group.length; j++){
+            measurement = group[j];
+            graphicalElement = measurement.graphicalElement;
+            polygonPoints.push(graphicalElement.x);
+            polygonPoints.push(graphicalElement.y);
+        }
+
+
     }
 
     // draw the polygon
@@ -185,64 +189,91 @@ hgraph.prototype.draw = function () {
 
     var t; // the transformation variable
     var labelR; // the radius of the label
-    for(var i = 0; i < points.length; i ++){
-        point = points[i];
-        valX = point.x;
-        valY = point.y;
-        angle = point.angle;
-        r = point.r;
-        measurement = point.measurement;
+    var margin; // a small margin around the dot for the label
+    // variables for the repositioning of the group titles or big labels
+    var gBoxX1, gBoxY1, gBoxX2, gBoxY2;
+    for (var i = 0; i < this.groupedMs.length; i ++){
+        group = this.groupedMs[i].measurements; // assign the array of measurements
+        for(var j = 0; j < group.length; j++) {
+            measurement = group[j];
+            graphicalElement = measurement.graphicalElement;
 
-        circle = this.s.circle(valX, valY, 4);
-        circle.attr({
-            stroke: "black",
-            fill: "white",
-            strokeWidth: 2
-        });
-        // now the labels
-        // check:
-        // http://robsneuron.blogspot.fi/2013/11/svg-text-in-boxes-with-snapsvg.html
-        labelR = r;
-        labelX = centerX + Math.cos(angle) * labelR;
-        labelY = centerY - Math.sin(angle) * labelR;
+            valX = graphicalElement.x;
+            valY = graphicalElement.y;
+            angle = graphicalElement.angle;
+            r = graphicalElement.r;
 
-        text = this.s.text(labelX, labelY, measurement.label + " " + measurement.val + " " + measurement.units);
-        text.attr({
-            fontSize: "11px"
-        });
 
-        margin = Math.cos(angle) * 24;
+            circle = this.s.circle(valX, valY, 4);
+            circle.attr({
+                stroke: "black",
+                fill: "white",
+                strokeWidth: 2
+            });
+            // now the labels
+            // check:
+            // http://robsneuron.blogspot.fi/2013/11/svg-text-in-boxes-with-snapsvg.html
+            labelR = r;
+            labelX = centerX + Math.cos(angle) * labelR;
+            labelY = centerY - Math.sin(angle) * labelR;
 
-        transformX = margin.toString();
-        bbox = text.getBBox();
+            text = this.s.text(labelX, labelY, measurement.label + " " + measurement.val + " " + measurement.units);
+            text.attr({
+                fontSize: "11px"
+            });
 
-        if(Math.cos(angle) < 0){
-            transformX = "-" + (bbox.width + Math.abs(margin)).toString();
+            margin = Math.cos(angle) * 24;
+
+            transformX = margin.toString();
+            bbox = text.getBBox();
+
+            if (Math.cos(angle) < 0) {
+                transformX = "-" + (bbox.width + Math.abs(margin)).toString();
+            }
+
+            margin = Math.sin(angle) * 16;
+
+            transformY = "-" + margin.toString();
+            if (Math.sin(angle) < 0) {
+                transformY = "" + (bbox.height + Math.abs(margin)).toString();
+            }
+            text.transform("t" + transformX + "," + transformY);
+            measurement.svg = {
+                bbox: bbox,
+                text: text
+            };
+
+            /*
+             if(Math.cos(angle) >= 0 && Math.sin(angle) >= 0){
+             text.transform("t15,0" + "r-20," + valX + "," + valY);
+             } else if(Math.cos(angle) > 0 && Math.sin(angle) < 0){
+             text.transform("t15," + (bbox.height - 3).toString() + "r20," + valX + "," + valY);
+             } else if(Math.cos(angle) < 0 && Math.sin(angle) > 0){
+             text.transform("t-" + (bbox.width + 10).toString() + ",-30r20");
+             } else if(Math.cos(angle) < 0 && Math.sin(angle) < 0){
+             text.transform("t-"
+             + (bbox.width + 10).toString()
+             + "," + (bbox.height + bbox.width * 0.15).toString()
+             + "r-20");
+             }
+             */
+            // t = Snap.matrix().rotate(-degrees, valX, valY);
+            // text.transform(t);
+        }
+        // draw a square around the labels of the same category
+        console.log("" + this.groupedMs[i].name);
+
+        // to determine the full area that is comprised of the labels
+        for(var j = 0; j < group.length; j++) {
+            measurement = group[j];
+            bbox = measurement.svg.bbox;
+            gBoxX1 = bbox.x;
+            gBoxX2 = bbox.x + bbox.width;
+            gBoxY1 = bbox.y - bbox.height;
+            gBoxY2 = bbox.y;
+            console.log("x1 " + gBoxX1 + " | y1 " + gBoxY1 + " || x2 " + gBoxX2 + " | " + gBoxY2);
         }
 
-        margin = Math.sin(angle) * 16;
-
-        transformY = "-" + margin.toString();
-        if(Math.sin(angle) < 0){
-            transformY = "" + (bbox.height + Math.abs(margin)).toString();
-        }
-        text.transform("t" + transformX + "," + transformY);
-        /*
-        if(Math.cos(angle) >= 0 && Math.sin(angle) >= 0){
-            text.transform("t15,0" + "r-20," + valX + "," + valY);
-        } else if(Math.cos(angle) > 0 && Math.sin(angle) < 0){
-            text.transform("t15," + (bbox.height - 3).toString() + "r20," + valX + "," + valY);
-        } else if(Math.cos(angle) < 0 && Math.sin(angle) > 0){
-            text.transform("t-" + (bbox.width + 10).toString() + ",-30r20");
-        } else if(Math.cos(angle) < 0 && Math.sin(angle) < 0){
-            text.transform("t-"
-                + (bbox.width + 10).toString()
-                + "," + (bbox.height + bbox.width * 0.15).toString()
-                + "r-20");
-        }
-        */
-        // t = Snap.matrix().rotate(-degrees, valX, valY);
-        // text.transform(t);
     }
 
 };
