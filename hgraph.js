@@ -24,11 +24,7 @@ function hgraph(svgId, groupedMs){
     this.r1 = this.width * 0.15; // the next radius
     // the limit of the circle
     this.r2 = this.width * 0.17;
-<<<<<<< HEAD
-    this.r3 = this.width * 0.29; // where we place the category name
-=======
     this.r3 = this.width * 0.3; // where we place the category name
->>>>>>> 13973b8c48220b1750700087bca1be3a44b8ac19
     this.draw();
 }
 
@@ -156,11 +152,7 @@ hgraph.prototype.draw = function () {
         if(Math.cos(labelA) < 0){
             transformX = "-" + Math.abs( bbox.width - ( (1 + Math.cos(labelA)) * 85 ) ).toString();
         }
-<<<<<<< HEAD
-        transformY = "" + (61 * Math.sin(labelA)).toString();
-=======
         transformY = "" + (55 * Math.sin(labelA)).toString();
->>>>>>> 13973b8c48220b1750700087bca1be3a44b8ac19
         if(Math.sin(labelA) < 0){
             transformY = "-" + (bbox.height + Math.abs(Math.sin(labelA) * 17)).toString();
         }
