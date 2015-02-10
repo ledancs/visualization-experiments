@@ -32,6 +32,7 @@ Angle.prototype.draw = function (){
     // the radius of the actual values
     var valRad0 = 140;
     var valRad1 = 185;
+    var valRadL = 185;
 
     var centerX = this.externalMargin;
     var centerY = this.height - this.externalMargin;
@@ -89,6 +90,8 @@ Angle.prototype.draw = function (){
     x2 = centerX + Math.cos(0) * r3;
     y2 = centerY - Math.sin(0) * r3;
 
+    var xL, yL, angleL;
+    var angles = [];
     this.addMinMaxLine(x1, y1 + this.innerMargin, x2, y2 + this.innerMargin);
     this.addMinMaxLabel(x2, y2 + this.innerMargin, "LOW", 0);
 
@@ -113,7 +116,7 @@ Angle.prototype.draw = function (){
         pointer = this.s.line(x1, y1, x2, y2);
         pointer.attr({
             stroke: "black",
-            strokeWidth: 2
+            strokeWidth: 1
         });
 
         /*circle = this.s.circle(centerX + Math.cos(angle) * (valRad1 - 12),
@@ -122,9 +125,32 @@ Angle.prototype.draw = function (){
             stroke: "black",
             strokeWidth: 2
         });*/
+        // detect if there is a collision with the labels by measuring the difference between the angles
+        // adjust angleL as needed
 
-        this.addLabel(measurement, x2, y2, angle);
+        angleL = this.adjustLabelAngle(angle, angles);
+
+        angles.push(angleL);
+        xL = centerX + Math.cos(angleL) * valRadL;
+        yL = centerY - Math.sin(angleL) * valRadL;
+
+        this.addLabel(measurement, xL, yL, angleL);
     }
+};
+
+Angle.prototype.adjustLabelAngle = function (angle, angles) {
+    var angleL = angle;
+    for(var i = 0; i < angles.length; i ++){
+        if(angleL > angles[i] - 0.025 && angleL <= angles[i]){
+            // this angle is overlapping from the lower part
+            angleL -= 0.04;
+        }
+        else if(angle < angles[i] + 0.025 && angle > angles[i]){
+            // this angle is overlapping from the upper part
+            angleL += 0.04;
+        }
+    }
+    return angleL;
 };
 
 Angle.prototype.addMinMaxLine = function (x1, y1, x2, y2) {

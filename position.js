@@ -7,7 +7,7 @@ function Position (svgId, measurements, width, height){
     this.width = parseFloat(this.svg.getAttribute("width"));
     this.height = parseFloat(this.svg.getAttribute("height"));
     this.margin = 7;
-    this.rowSize = 75;
+    this.rowSize = 50;
     this.s = Snap('#' + svgId);
     this.draw();
 }

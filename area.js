@@ -39,12 +39,12 @@ Area.prototype.draw = function (){
 
     // now the wellness zone
     // similar way to calculate the coordinates and variables
-    var wZoneWidth = graphicWidth * 0.75; // since this is area we need to be careful with the proportions
+    var wZoneWidth = graphicWidth * 0.7; // since this is area we need to be careful with the proportions
     // there will be a quarter left for high values
     // a quarter zone for the wellness area
     // another quarter to define the end of the wellness area for lower values
     // the final quarter is for values lower than the wellness area
-    var wZoneHeight = graphicHeight * 0.75;
+    var wZoneHeight = graphicHeight * 0.7;
     var wZoneX = x0 + graphicWidth/2 - wZoneWidth/2;
     var wZoneY = y0 + graphicHeight/2 - wZoneHeight/2;
     var wZoneArea = this.s.rect(wZoneX, wZoneY, wZoneWidth, wZoneHeight);
@@ -92,6 +92,8 @@ Area.prototype.draw = function (){
     var measurement, scale, area, h, b, x, y, r, graphicalValue;
     // we are using a line to join the label to the figures to avoid overlapping
     var labelX, labelY, text, joinY1, joinY2, join;
+    // a random margin
+    var randomMargin = 0;
     for(var i = 0; i < this.measurements.length; i ++){
         // begin
         measurement = this.measurements[i];
@@ -125,12 +127,15 @@ Area.prototype.draw = function (){
         });
 
         // start by placing the labels in the center and in one side, either left or right
-        labelX = (i % 3 == 0) ? x + b * 0.65: x + b * 0.015;
-        labelY = (i % 2 == 0) ? y - 25: y + h + 29;
+        labelX = (i % 3 == 0) ? x + b * 0.85: x + b * 0.010;
+
+        randomMargin = (i % 3 == 0) ? Math.random() * (1.75 - 1) + 1: Math.random() * (1 - 0.25) + 0.25;
+        labelY = (i % 2 == 0) ? y - 10 : y + h + 19 ;
+
 
         //labelY *= 0.1;
 
-        text = this.s.text(labelX - 30, labelY, measurement.label + " " + measurement.val + " " + measurement.units);
+        text = this.s.text(labelX - 50, labelY, measurement.label + " " + measurement.val + " " + measurement.units);
         text.attr({
             fontSize: "13"
         });

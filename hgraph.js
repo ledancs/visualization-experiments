@@ -23,8 +23,8 @@ function hgraph(svgId, groupedMs){
     this.r0 = this.width * 0.1; // the smallest radius
     this.r1 = this.width * 0.15; // the next radius
     // the limit of the circle
-    this.r2 = this.width * 0.165;
-    this.r3 = this.width * 0.3; // where we place the category name
+    this.r2 = this.width * 0.17;
+    this.r3 = this.width * 0.29; // where we place the category name
     this.draw();
 }
 
@@ -136,7 +136,7 @@ hgraph.prototype.draw = function () {
             strokeWidth: 1
         });
 
-        // label
+        // label for measurement groups
         labelADelta0 -= delta/2 - sectionSpace;
         labelADelta1 -= delta/2 - sectionSpace;
         labelA = labelADelta0 + (labelADelta1 - labelADelta0) / 2;
@@ -152,7 +152,7 @@ hgraph.prototype.draw = function () {
         if(Math.cos(labelA) < 0){
             transformX = "-" + Math.abs( bbox.width - ( (1 + Math.cos(labelA)) * 75 ) ).toString();
         }
-        transformY = "" + (65 * Math.sin(labelA)).toString();
+        transformY = "" + (61 * Math.sin(labelA)).toString();
         if(Math.sin(labelA) < 0){
             transformY = "-" + (bbox.height + Math.abs(Math.sin(labelA) * 15)).toString();
         }
@@ -179,7 +179,7 @@ hgraph.prototype.draw = function () {
     this.s.polygon(polygonPoints).attr({
         fill: "grey",
         stroke: "none",
-        opacity: 0.35
+        opacity: 0.3
     });
     this.s.polygon(polygonPoints).attr({
         fill: "none",
