@@ -85,16 +85,16 @@
 
     // http://www.mayoclinic.org/diseases-conditions/high-blood-cholesterol/in-depth/cholesterol-levels/art-20048245
     var fBGluc = new Measurement("fB-Gluc", 4, 6, 6.2, "mmol/l");
-    var cholesterol = new Measurement("Cholesterol", 0, 6.2, 5.7, "mmol/l");
-    var ldl = new Measurement("LDL", 0, 4.1, 3.8, "mmol/l"); // bad cholesterol
+    var cholesterol = new Measurement("Cholesterol", -3, 6.2, 5.7, "mmol/l");
+    var ldl = new Measurement("LDL", 1, 4.1, 3.8, "mmol/l"); // bad cholesterol
     var hdl = new Measurement("HDL", 1.3, 2.2, 0.9, "mmol/l"); // good cholesterol
     var hemoglobine = new Measurement("Hemoglobine", 134, 167, 141, "gl/l");
     var labTestsG = new Angle("LabContainer", [hemoglobine, fBGluc, cholesterol, ldl, hdl]);
 
-    var tobacco = new Measurement("Tobacco", -5, 5, 0, ""); // zero is ideal
+    var tobacco = new Measurement("Tobacco", -4, 5, 0, ""); // zero is ideal
     var alcohol = new Measurement("Alcohol", 0, 10, 6, "AUDIT"); // this is based on a scale
-    var drugAbuse = new Measurement("Drug Abuse", -4, 5, 0, ""); // zero is ideal
-    var medicationAbuse = new Measurement("Medication Abuse", -3, 5, 0, "");
+    var drugAbuse = new Measurement("Drug Abuse", -2, 5, 0, ""); // zero is ideal
+    var medicationAbuse = new Measurement("Medication Abuse", -2, 5, 0, "");
     var drugsG = new Angle("DrugsContainer", [tobacco, alcohol, drugAbuse, medicationAbuse]);
 
     var depression = new Measurement("Depression", -9, 9, 7, "");
