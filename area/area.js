@@ -122,7 +122,7 @@ Area.prototype.draw = function (){
         r.attr({
             fill: "none",
             stroke: "black",
-            strokeWidth: 1.5,
+            strokeWidth: 1,
             opacity: 0.75
         });
 

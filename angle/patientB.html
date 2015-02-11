@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../visualization-layout.css" />
+</head>
+<body>
+
+<div>
+    <h1>Blood Pressure</h1>
+    <svg id="BloodPressureContainer" width="425" height="400"></svg>
+</div>
+
+<div>
+    <h1>Physical Activity</h1>
+    <svg id="ExerciseContainer" width="425" height="400"></svg>
+</div>
+
+<div>
+    <h1>Body Composition</h1>
+    <svg id="BodyCompositionContainer" width="425" height="400"></svg>
+</div>
+
+<div>
+    <h1>Sleep</h1>
+    <svg id="SleepContainer" width="425" height="400"></svg>
+</div>
+
+<div>
+    <h1>Fitness</h1>
+    <svg id="FitnessContainer" width="425" height="400"></svg>
+</div>
+
+<div>
+    <h1>Lab Tests</h1>
+    <svg id="LabContainer" width="425" height="400"></svg>
+</div>
+
+<div>
+    <h1>Drugs</h1>
+    <svg id="DrugsContainer" width="425" height="400"></svg>
+</div>
+
+<div>
+    <h1>Emotional Wellbeing</h1>
+    <svg id="EmotionalWellbeingContainer" width="425" height="400"></svg>
+</div>
+
+</body>
+<script type="text/javascript" src="../measurement.js"></script>
+<script type="text/javascript" src="../groups.js"></script>
+<script type="text/javascript" src="../patientB.js"></script>
+<script type="text/javascript" src="../snap.svg.js"></script>
+<script type="text/javascript" src="angle.js"></script>
+<script>
+    var bloodPressureG = new Angle("BloodPressureContainer", patient.bloodPressure);
+    var physicalFitnessG = new Angle("FitnessContainer", patient.fitness);
+    var exerciseG = new Angle("ExerciseContainer", patient.exercise);
+    var bodyCompositionG = new Angle("BodyCompositionContainer", patient.bodyComposition);
+    var sleepG = new Angle("SleepContainer", patient.sleep);
+    var labTestsG = new Angle("LabContainer", patient.labTests);
+    var drugsG = new Angle("DrugsContainer", patient.drugs);
+    var emotionalG = new Angle("EmotionalWellbeingContainer", patient.emotionalWellbeing);
+</script>
+</html>

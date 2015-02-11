@@ -20,17 +20,26 @@
 <body>
 
 <div>
-    <svg id="hgraphContainer" width="1750" height="950" ></svg>
+    <svg id="hgraphContainer" width="1750" height="875" ></svg>
 </div>
 
 </body>
-<script type="text/javascript" src="measurement.js"></script>
-<script type="text/javascript" src="groups.js"></script>
-<script type="text/javascript" src="patientA.js"></script>
-<script type="text/javascript" src="snap.svg.js"></script>
-<script type="text/javascript" src="hgraph/hgraph.js"></script>
+<script type="text/javascript" src="../measurement.js"></script>
+<script type="text/javascript" src="../groups.js"></script>
+<script type="text/javascript" src="../patientB.js"></script>
+<script type="text/javascript" src="../snap.svg.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="hgraph.js"></script>
 <script>
-
+    // the resize function to fit the SVG
+    function createSVG(){
+        new hgraph("hgraphContainer", [exerciseG, bloodPressureG, bodyCompositionG, sleepG, physicalFitnessG, labTestsG, drugsG, emotionalG]);
+    }
+    // add a listener
+    window.addEventListener("resize", function(){
+        resizeSVG(createSVG);
+    });
+    // now the patient
     var bloodPressureG = new GroupedMs("Blood Pressure", patient.bloodPressure);
     var physicalFitnessG = new GroupedMs("Fitness", patient.fitness);
     var exerciseG = new GroupedMs("Exercise", patient.exercise);
@@ -39,7 +48,8 @@
     var labTestsG = new GroupedMs("Lab Tests", patient.labTests);
     var drugsG = new GroupedMs("Drugs", patient.drugs);
     var emotionalG = new GroupedMs("Emotional wellbeing", patient.emotionalWellbeing);
-
-    var g = new hgraph("hgraphContainer", [exerciseG, bloodPressureG, bodyCompositionG, sleepG, physicalFitnessG, labTestsG, drugsG, emotionalG]);
+    // resize for the first time
+    resizeSVG(createSVG);
+    // plot the patient
 </script>
 </html>

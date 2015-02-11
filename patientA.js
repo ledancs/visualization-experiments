@@ -2,45 +2,45 @@
  * Created by andres on 2/11/15.
  */
 
-var patientA = {};
+var patient = {};
 
-patientA.bloodPressure = new BloodPressure({systolic: 137, diastolic: 88}); // 137, 88
+patient.bloodPressure = new BloodPressure({systolic: 137, diastolic: 88}); // 137, 88
 
-patientA.fitness = new Fitness({
-    restingHeartRate: 73,
-    fitnessIndex: 75,
+patient.fitness = new Fitness({
+    restingHeartRate: 77,
+    fitnessIndex: 74,
     muscularForce: 37,
-    muscularEndurance: 3,
-    balance: 2
+    muscularEndurance: 2,
+    balance: 1
 });
 
-patientA.exercise = new Exercise({weeklyActiveDays: 2, stepsPerDay: 4885});
+patient.exercise = new Exercise({weeklyActiveDays: 2, stepsPerDay: 4885});
 
-patientA.bodyComposition = new BodyComposition({
+patient.bodyComposition = new BodyComposition({
     bodyMassIndex: 33.2,
     waistDiameter: 90,
     fatPercentage: 35.2
 });
 
-patientA.sleep = new Sleep({timeInBed: 8, timeAsleep: 7.5});
+patient.sleep = new Sleep({timeInBed: 8, timeAsleep: 7.5});
 
 // 6.2, 5.7, 3.8, 0.9, 141
-patientA.labTests = new LabTests({
-    fBGluc: 6.2,
-    cholesterol: 5.7,
-    ldl: 3.8,
+patient.labTests = new LabTests({
+    fBGluc: 6.6,
+    cholesterol: 6.9,
+    ldl: 4.5,
     hdl: 0.9,
     hemoglobine: 141
 });
 
-patientA.drugs = new Drugs({
+patient.drugs = new Drugs({
     tobacco: 0,
     alcohol: 6,
     drugAbuse: 0,
     medicationAbuse: 0
 });
 
-patientA.emotionalWellbeing = new EmotionalWellbeing({
+patient.emotionalWellbeing = new EmotionalWellbeing({
     depression: 7,
     stressRecovery: 22,
     stressLevel: 47,

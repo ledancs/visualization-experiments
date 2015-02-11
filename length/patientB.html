@@ -3,7 +3,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
-    <link rel="stylesheet" type="text/css" href="visualization-layout.css" />
+    <link rel="stylesheet" type="text/css" href="../visualization-layout.css" />
 </head>
 <body>
 
@@ -48,20 +48,20 @@
 </div>
 
 </body>
-<script type="text/javascript" src="measurement.js"></script>
-<script type="text/javascript" src="groups.js"></script>
-<script type="text/javascript" src="patientA.js"></script>
-<script type="text/javascript" src="snap.svg.js"></script>
+<script type="text/javascript" src="../measurement.js"></script>
+<script type="text/javascript" src="../groups.js"></script>
+<script type="text/javascript" src="../patientB.js"></script>
+<script type="text/javascript" src="../snap.svg.js"></script>
 <script type="text/javascript" src="length.js"></script>
 <script>
-    var bloodPressureG = new Length("BloodPressureContainer", patientA.bloodPressure);
-    var physicalFitnessG = new Length("FitnessContainer", patientA.fitness);
-    var exerciseG = new Length("ExerciseContainer", patientA.exercise);
-    var bodyCompositionG = new Length("BodyCompositionContainer", patientA.bodyComposition);
-    var sleepG = new Length("SleepContainer", patientA.sleep);
-    var labTestsG = new Length("LabContainer", patientA.labTests);
-    var drugsG = new Length("DrugsContainer", patientA.drugs);
-    var emotionalG = new Length("EmotionalWellbeingContainer", patientA.emotionalWellbeing);
+    var bloodPressureG = new Length("BloodPressureContainer", patient.bloodPressure);
+    var physicalFitnessG = new Length("FitnessContainer", patient.fitness);
+    var exerciseG = new Length("ExerciseContainer", patient.exercise);
+    var bodyCompositionG = new Length("BodyCompositionContainer", patient.bodyComposition);
+    var sleepG = new Length("SleepContainer", patient.sleep);
+    var labTestsG = new Length("LabContainer", patient.labTests);
+    var drugsG = new Length("DrugsContainer", patient.drugs);
+    var emotionalG = new Length("EmotionalWellbeingContainer", patient.emotionalWellbeing);
 
 </script>
 </html>

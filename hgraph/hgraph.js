@@ -257,7 +257,7 @@ hgraph.prototype.draw = function () {
                     stroke: "grey",
                     strokeWidth: 1.25
                 });
-                console.log("line");
+                // console.log("line");
             }
 
 

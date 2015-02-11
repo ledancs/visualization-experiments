@@ -141,13 +141,13 @@ Angle.prototype.draw = function (){
 Angle.prototype.adjustLabelAngle = function (angle, angles) {
     var angleL = angle;
     for(var i = 0; i < angles.length; i ++){
-        if(angleL > angles[i] - 0.025 && angleL <= angles[i]){
+        if(angleL > angles[i] - 0.040 && angleL <= angles[i]){
             // this angle is overlapping from the lower part
-            angleL -= 0.04;
+            angleL -= 0.037;
         }
-        else if(angle < angles[i] + 0.025 && angle > angles[i]){
+        else if(angle < angles[i] + 0.040 && angle > angles[i]){
             // this angle is overlapping from the upper part
-            angleL += 0.04;
+            angleL += 0.035;
         }
     }
     return angleL;
