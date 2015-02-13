@@ -7,30 +7,31 @@ var patient = {};
 patient.bloodPressure = new BloodPressure({systolic: 123, diastolic: 80}); // 137, 88
 
 patient.fitness = new Fitness({
-    restingHeartRate: 72,
+    restingHeartRate: 68,
     fitnessIndex: 94,
     muscularForce: 68,
-    muscularEndurance: 3,
-    balance: 2
+    muscularEndurance: 4,
+    balance: 4
 });
 
-patient.exercise = new Exercise({weeklyActiveDays: 4, stepsPerDay: 10256});
+patient.exercise = new Exercise({weeklyActiveDays: 5, stepsPerDay: 12256});
 
 patient.bodyComposition = new BodyComposition({
     bodyMassIndex: 26.7,
     waistDiameter: 51,
-    fatPercentage: 32.3
+    fatPercentage: 29.3
 });
 
-patient.sleep = new Sleep({timeInBed: 8.2, timeAsleep: 7.8});
+patient.sleep = new Sleep({timeInBed: 8.5, timeAsleep: 7.8});
 
 // 6.2, 5.7, 3.8, 0.9, 141
 patient.labTests = new LabTests({
-    fBGluc: 4.4,
-    cholesterol: 2.97,
-    ldl: 1.3,
-    hdl: 2.07,
-    hemoglobine: 155
+    fBGluc: 5.5,
+    cholesterol: 4.5,
+    ldl: 2.55,
+    hdl: 1.5,
+    hemoglobin: 155,
+    triglycerides: 1
 });
 
 patient.drugs = new Drugs({
