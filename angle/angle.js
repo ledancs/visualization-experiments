@@ -158,6 +158,17 @@ Angle.prototype.draw = function (){
         yL = centerY - Math.sin(angleL) * valRadL;
 
         this.addLabel(plotElements[i].text, xL, yL, angleL);
+
+        // draw a line to the label
+        this.s.line(
+            x2,
+            y2,
+            xL,
+            yL).attr({
+                stroke: "grey",
+                strokeWidth: 1,
+                opacity: 0.5
+            });
     }
 };
 
