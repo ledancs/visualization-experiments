@@ -26,7 +26,7 @@ patient.sleep = new Sleep({timeInBed: 7.5, timeAsleep: 6});
 
 // 6.2, 5.7, 3.8, 0.9, 141
 patient.labTests = new LabTests({
-    fBGluc: 5.9,
+    fBGluc: 6.2,
     cholesterol: 6.2,
     ldl: 4.175,
     hdl: 0.9,
