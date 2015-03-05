@@ -39,12 +39,12 @@ Area.prototype.draw = function (){
 
     // now the wellness zone
     // similar way to calculate the coordinates and variables
-    var wZoneWidth = graphicWidth * 0.7; // since this is area we need to be careful with the proportions
+    var wZoneWidth = graphicWidth * 0.72; // since this is area we need to be careful with the proportions
     // there will be a quarter left for high values
     // a quarter zone for the wellness area
     // another quarter to define the end of the wellness area for lower values
     // the final quarter is for values lower than the wellness area
-    var wZoneHeight = graphicHeight * 0.7;
+    var wZoneHeight = graphicHeight * 0.72;
     var wZoneX = x0 + graphicWidth/2 - wZoneWidth/2;
     var wZoneY = y0 + graphicHeight/2 - wZoneHeight/2;
     var wZoneArea = this.s.rect(wZoneX, wZoneY, wZoneWidth, wZoneHeight);
@@ -70,7 +70,7 @@ Area.prototype.draw = function (){
     var minAreaHeight = graphicHeight * 0.1;
     var minAreaX = graphicWidth/2 - minAreaWidth/2 + x0;
     var minAreaY = graphicHeight/2 - minAreaHeight/2 + y0;
-    var minArea = this.s.rect(minAreaX, minAreaY, minAreaWidth, minAreaHeight);
+    var minArea = this.s.rect(minAreaX - 5, minAreaY - 5, minAreaWidth + 10, minAreaHeight + 10);
     minArea.attr({
         fill: "none",
         stroke: "grey",
@@ -90,10 +90,8 @@ Area.prototype.draw = function (){
     // c is the same for any rectangle created with these proportions
     // the width is the coefficient times the total area
     var measurement, scale, area, h, b, x, y, r, graphicalValue;
-    // we are using a line to join the label to the figures to avoid overlapping
-    var labelX, labelY, text, joinY1, joinY2, join;
-    // a random margin
-    var randomMargin = 0;
+
+
     for(var i = 0; i < this.measurements.length; i ++){
         // begin
         measurement = this.measurements[i];
@@ -118,34 +116,75 @@ Area.prototype.draw = function (){
         // first we obtain x
         x = x0 + graphicWidth/2 - b/2; // we divide by two because we want to center the shape
         y = y0 + graphicHeight/2 - h/2;
+
         r = this.s.rect(x, y, b, h);
+
+        measurement.y = y;
+        measurement.x = x;
+        measurement.b = b;
+        measurement.h = h;
+
         r.attr({
             fill: "none",
             stroke: "black",
-            strokeWidth: 1,
-            opacity: 0.75
+            strokeWidth: 0.60,
+            "vector-effect": "non-scaling-stroke"
         });
 
-        // start by placing the labels in the center and in one side, either left or right
-        labelX = (i % 3 == 0) ? x + b * 0.85: x + b * 0.010;
 
-        randomMargin = (i % 3 == 0) ? Math.random() * (1.75 - 1) + 1: Math.random() * (1 - 0.25) + 0.25;
-        labelY = (i % 2 == 0) ? y - 10 : y + h + 19 ;
+
+
+    }
+
+    // we are using a line to join the label to the figures to avoid overlapping
+    var labelX, labelY, text;
+
+    var angle = Math.PI / 4;
+    var radius = this.width * 0.34 ;
+    var bbox, transformX, transformY;
+
+    var angles = [ Math.PI * 0.40, Math.PI * 0.60, Math.PI * 1.40, Math.PI * 1.60, Math.PI * 0.45, Math.PI * 0.55 ];
+    var lineY;
+
+    for(var i = 0; i < this.measurements.length; i ++){
+        measurement = this.measurements[i];
+
+        angle = angles[i % angles.length];
+        if(i > 3 ){
+            radius += 5;
+        }
+
+        labelX = this.width / 2;
+        labelX += Math.cos(angle) * radius;
+
+        labelY = this.height / 2;
+        labelY -= Math.sin(angle) * radius;
+
 
 
         //labelY *= 0.1;
 
-        text = this.s.text(labelX - 50, labelY, measurement.label + " " + measurement.val + " " + measurement.units);
-        text.attr({
-            fontSize: "13"
-        });
-        joinY1 = (i % 2 == 0) ? labelY + 2: labelY - 13;
-        joinY2 = (i % 2 == 0) ? y: y + h;
-        join = this.s.line(labelX + 5, joinY1, labelX + 5, joinY2);
-        join.attr({
-            stroke: "black",
-            strokeWidth: "1.5"
-        });
+        text = this.s.text(labelX, labelY, measurement.label + " " + measurement.val + " " + measurement.units);
+        text.attr( { fontSize: "11" } );
 
+        bbox = text.getBBox();
+        transformX = "0";
+        if(Math.cos(angle) < 0){
+            transformX = "-" + bbox.width.toString();
+        }
+        transformY = "0";
+        lineY = measurement.y;
+        labelY += 2;
+        if(Math.sin(angle) < 0){
+            transformY = bbox.height.toString();
+            lineY += measurement.h;
+            labelY += 2;
+        }
+        text.transform("t" + transformX + "," + transformY);
+
+        this.s.line(labelX, labelY, labelX, lineY).attr({
+            stroke: "gainsboro",
+            strokeWidth: 1.75
+        });
     }
 };

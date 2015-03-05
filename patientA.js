@@ -22,15 +22,16 @@ patient.bodyComposition = new BodyComposition({
     fatPercentage: 35.2
 });
 
-patient.sleep = new Sleep({timeInBed: 8, timeAsleep: 7.5});
+patient.sleep = new Sleep({timeInBed: 7.5, timeAsleep: 6});
 
 // 6.2, 5.7, 3.8, 0.9, 141
 patient.labTests = new LabTests({
-    fBGluc: 6.6,
-    cholesterol: 6.9,
-    ldl: 4.5,
+    fBGluc: 6.2,
+    cholesterol: 6.2,
+    ldl: 4.175,
     hdl: 0.9,
-    hemoglobine: 141
+    hemoglobin: 141,
+    triglycerides: 2.5
 });
 
 patient.drugs = new Drugs({

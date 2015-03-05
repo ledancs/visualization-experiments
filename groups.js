@@ -4,7 +4,7 @@
 
 function BloodPressure (values){
     return [
-        new Measurement("Systolic", 100, 130, values.systolic),
+        new Measurement("Systolic", 100, 130, values.systolic, "mmHG (avg)"),
         new Measurement("Diastolic", 70, 85, values.diastolic, "mmHG (avg)")];
 }
 
@@ -23,7 +23,7 @@ function Fitness(values){
         // 1, 2 are poor, 3 is borderline and 4, and 5 are good
         // no upper bound
         new Measurement("Muscular endurance", 2.5, 6, values.muscularEndurance, ""),
-        new Measurement("Balance", 1, 4, values.balance, "")];
+        new Measurement("Balance", 2, 6, values.balance, "")];
 
 }
 
@@ -49,11 +49,13 @@ function Sleep(values){
 function LabTests(values){
     // http://www.mayoclinic.org/diseases-conditions/high-blood-cholesterol/in-depth/cholesterol-levels/art-20048245
     var fBGluc = new Measurement("fB-Gluc", 4, 6, values.fBGluc, "mmol/l");
-    var cholesterol = new Measurement("Cholesterol", 0, 6.2, values.cholesterol, "mmol/l");
-    var ldl = new Measurement("LDL", 0, 4.1, values.ldl, "mmol/l"); // bad cholesterol
-    var hdl = new Measurement("HDL", 1.3, 2.2, values.hdl, "mmol/l"); // good cholesterol
-    var hemoglobin = new Measurement("Hemoglobin", 134, 167, values.hemoglobine, "gl/l");
-    return [hemoglobin, fBGluc, cholesterol, ldl, hdl];
+    // http://www.mayoclinic.org/tests-procedures/cholesterol-test/basics/results/prc-20013282
+    var cholesterol = new Measurement("Cholesterol", 2, 5, values.cholesterol, "mmol/l"); // less than 5
+    var ldl = new Measurement("LDL", 0, 3, values.ldl, "mmol/l"); // less than 3
+    var hdl = new Measurement("HDL", 1, 2, values.hdl, "mmol/l"); // more than 1
+    var triglycerides = new Measurement("triglycerides", 0, 2, values.triglycerides, "mmol/l"); // less than 2
+    var hemoglobin = new Measurement("Hemoglobin", 134, 167, values.hemoglobin, "gl/l");
+    return [hemoglobin, fBGluc, cholesterol, ldl, hdl, triglycerides];
 }
 
 function Drugs(values){

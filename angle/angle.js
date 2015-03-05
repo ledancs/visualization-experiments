@@ -31,8 +31,8 @@ Angle.prototype.draw = function (){
     r3 = 245; // the end point for the wellness zone
     // the radius of the actual values
     var valRad0 = 140;
-    var valRad1 = 185;
-    var valRadL = 185;
+    var valRad1 = 215;
+    var valRadL = 250;
 
     var centerX = this.externalMargin;
     var centerY = this.height - this.externalMargin;
@@ -91,13 +91,14 @@ Angle.prototype.draw = function (){
     y2 = centerY - Math.sin(0) * r3;
 
     var xL, yL, angleL;
-    var angles = [];
+    var plotElements = [];
     this.addMinMaxLine(x1, y1 + this.innerMargin, x2, y2 + this.innerMargin);
     this.addMinMaxLabel(x2, y2 + this.innerMargin, "LOW", 0);
 
     var measurement, scale, angle, pointer;
+    var text;
 
-    for(var i = 0; i < this.measurements.length; i ++){
+    for(var i = 0; i < this.measurements.length; i ++) {
         measurement = this.measurements[i];
         // the angle goes from - radians to + radians so we multiply by 2 to get the full
         // spectrum of the PI/6 to PI/3 so we take this space as the full spectrum of
@@ -107,6 +108,27 @@ Angle.prototype.draw = function (){
         angle *= scale;
         angle += angle0; // this is the minimum value from which we count the optimal range or the wellness zone
 
+        text = measurement.label + ": " + measurement.val.toString() + " " + measurement.units;
+
+        plotElements.push({
+            angle: angle,
+            text: text
+        });
+    }
+    // sort the angles
+    plotElements.sort(Angle.compare);
+
+    angle = null; // clean this iterator
+    // plot the labels equally distributed among the space
+    var delta = (angle1 - angle0) / plotElements.length;
+    angleL = angle0; // increment by delta on each iteration starting from the initial angle
+    if(plotElements.length == 2){
+        angleL = plotElements[0].angle - Math.PI / 50;
+        delta = Math.PI / 50;
+    }
+
+    for(var i = 0; i < plotElements.length; i ++){
+        angle = plotElements[i].angle;
         x1 = centerX + Math.cos(angle) * valRad0;
         y1 = centerY - Math.sin(angle) * valRad0;
 
@@ -128,27 +150,48 @@ Angle.prototype.draw = function (){
         // detect if there is a collision with the labels by measuring the difference between the angles
         // adjust angleL as needed
 
-        angleL = this.adjustLabelAngle(angle, angles);
+        // angleL = this.adjustLabelAngle(angle, angles);
+        angleL += delta;
 
-        angles.push(angleL);
+        // angles.push(angleL);
         xL = centerX + Math.cos(angleL) * valRadL;
         yL = centerY - Math.sin(angleL) * valRadL;
 
-        this.addLabel(measurement, xL, yL, angleL);
+        this.addLabel(plotElements[i].text, xL, yL, angleL);
+
+        // draw a line to the label
+        this.s.line(
+            x2,
+            y2,
+            xL,
+            yL).attr({
+                stroke: "grey",
+                strokeWidth: 1,
+                opacity: 0.5
+            });
     }
+};
+
+Angle.compare = function(a, b) {
+    if (a.angle < b.angle)
+        return -1;
+    if (a.angle > b.angle)
+        return 1;
+    return 0;
 };
 
 Angle.prototype.adjustLabelAngle = function (angle, angles) {
     var angleL = angle;
+    var minimumSeparation = Math.PI / 100;
+
     for(var i = 0; i < angles.length; i ++){
-        if(angleL > angles[i] - 0.040 && angleL <= angles[i]){
+        if(angleL >= angles[i] - minimumSeparation && angleL <= angles[i]){
             // this angle is overlapping from the lower part
-            angleL -= 0.037;
+            angleL -= minimumSeparation;
+        } else if( angleL <= angles[i] + minimumSeparation && angleL >= angles[i]){
+            angleL += minimumSeparation;
         }
-        else if(angle < angles[i] + 0.040 && angle > angles[i]){
-            // this angle is overlapping from the upper part
-            angleL += 0.035;
-        }
+
     }
     return angleL;
 };
@@ -176,8 +219,7 @@ Angle.prototype.addMinMaxLabel = function (x, y, text, angle) {
     this.rotateText(angle, x, y, tx);
 };
 
-Angle.prototype.addLabel = function (measurement, x, y, angle) {
-    var text = measurement.label + ": " + measurement.val.toString() + " " + measurement.units;
+Angle.prototype.addLabel = function (text, x, y, angle) {
     var tx = this.s.text(x + 5, y + 5, text);
     tx.attr({
         fontSize: "11.7"

@@ -23,7 +23,7 @@ function hgraph(svgId, groupedMs){
     this.r0 = this.width * 0.1; // the smallest radius
     this.r1 = this.width * 0.15; // the next radius
     // the limit of the circle
-    this.r2 = this.width * 0.17;
+    this.r2 = this.width * 0.165;
     this.r3 = this.width * 0.3; // where we place the category name
     this.draw();
 }
@@ -190,6 +190,7 @@ hgraph.prototype.draw = function () {
     var t; // the transformation variable
     var labelR; // the radius of the label
     var margin; // a small margin around the dot for the label
+    var offset; // fix the number that are too close or equal to one from overlapping
     // variables for the repositioning of the group titles or big labels
     var gBoxX1, gBoxY1, gBoxX2, gBoxY2;
     for (var i = 0; i < this.groupedMs.length; i ++){
@@ -217,13 +218,22 @@ hgraph.prototype.draw = function () {
             labelR = Math.max(labelR, Math.max(r * 1.015, this.r2));
             labelX = centerX + Math.cos(angle) * labelR;
             labelY = centerY - Math.sin(angle) * labelR;
+            // preserve the sign
+            // make the change very sensitive to the angle so that the closer to 1 the more the coefficient will affect the position
+            offset = Math.sin(angle) * Math.pow(Math.sin(angle), 64) * 25;
+            labelY -= offset
+
+            /*if(Math.sin(angle) == 1)
+                labelY -= 15;
+            else if(Math.sin(angle) == -1)
+                labelY += 15;*/
 
             text = this.s.text(labelX, labelY, measurement.label + " " + measurement.val + " " + measurement.units);
             text.attr({
-                fontSize: "10.75px"
+                fontSize: "11.5px"
             });
 
-            margin = Math.cos(angle) * 5;
+            margin = Math.cos(angle) * 3;
 
             transformX = margin.toString();
             bbox = text.getBBox();
@@ -232,7 +242,7 @@ hgraph.prototype.draw = function () {
                 transformX = "-" + (bbox.width + Math.abs(margin)).toString();
             }
 
-            margin = Math.sin(angle) * 7;
+            margin = Math.sin(angle) * 5;
 
             transformY = "-" + margin.toString();
             if (Math.sin(angle) < 0) {
@@ -253,7 +263,7 @@ hgraph.prototype.draw = function () {
                     centerX + Math.cos(angle) * r * 1.05,
                     centerY - Math.sin(angle) * r * 1.05,
                     centerX + Math.cos(angle) * labelR,
-                    centerY - Math.sin(angle) * labelR).attr({
+                    centerY - Math.sin(angle) * labelR - offset).attr({
                     stroke: "grey",
                     strokeWidth: 1.25
                 });
