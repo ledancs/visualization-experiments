@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body{
+            font-family: sans-serif;
+        }
+
+        hr {
+            color: #abc;
+            background-color: #abc;
+            height: 5px;
+            border: 0;
+            padding: 0;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 1.15em;
+        }
+
+        div.numberHeader{
+            padding: 0.4em;
+            float: left;
+            width: 4.5em;
+            color: #80CC99;
+            font-weight: bolder;
+        }
+
+        div.number{
+            padding: 0.4em;
+            float: left;
+            width: 4.5em;
+        }
+
+        div.label{
+            padding: 0.4em;
+            float: left;
+            width: 15.5em;
+        }
+
+        div.group{
+            margin: 0.75em;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"> </div>
+</body>
+<script type="text/javascript" src="../measurement.js"></script>
+<script type="text/javascript" src="../groups.js"></script>
+<script type="text/javascript" src="../patientA.js"></script>
+<script type="text/javascript" src="../d3.js"></script>
+<script type="text/javascript" src="../masonry.pkgd.js"></script>
+<script type="text/javascript" src="table.js"></script>
+<script>
+    var bloodPressureG = new Table("Blood Pressure", patient.bloodPressure);
+    var physicalFitnessG = new Table("FitnessContainer", patient.fitness);
+    var exerciseG = new Table("ExerciseContainer", patient.exercise);
+    var bodyCompositionG = new Table("BodyCompositionContainer", patient.bodyComposition);
+    var sleepG = new Table("SleepContainer", patient.sleep);
+    var labTestsG = new Table("LabContainer", patient.labTests);
+    var drugsG = new Table("DrugsContainer", patient.drugs);
+    var emotionalG = new Table("EmotionalWellbeingContainer", patient.emotionalWellbeing);
+
+    var container = document.querySelector('#container');
+    var msnry = new Masonry( container, {
+        // options
+        columnWidth: 300,
+        itemSelector: '.group'
+    });
+
+</script>
+</html>
