@@ -51,7 +51,7 @@
 
         if (k == 32) {
             data.end = new Date().getTime();
-            
+
             console.log(JSON.stringify(data));
         }
     }

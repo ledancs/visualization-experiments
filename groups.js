@@ -5,7 +5,7 @@
 function BloodPressure (values){
     return [
         new Measurement("Systolic", 100, 130, values.systolic, "mmHG (avg)"),
-        new Measurement("Diastolic", 70, 85, values.diastolic, "mmHG (avg)")];
+        new Measurement("Diastolic", 70, 90, values.diastolic, "mmHG (avg)")];
 }
 
 function Fitness(values){
@@ -59,7 +59,7 @@ function LabTests(values){
 }
 
 function Drugs(values){
-    var tobacco = new Measurement("Tobacco", -5, 5, values.tobacco, ""); // zero is ideal
+    var tobacco = new Measurement("Tobacco", -5, 5, values.tobacco, " / month"); // zero is ideal
     var alcohol = new Measurement("Alcohol", 0, 10, values.alcohol, "AUDIT"); // this is based on a scale
     var drugAbuse = new Measurement("Drug Abuse", -5, 5, values.drugAbuse, ""); // zero is ideal
     var medicationAbuse = new Measurement("Medication Abuse", -5, 5, values.medicationAbuse, "");

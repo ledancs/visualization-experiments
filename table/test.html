@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../visualization-layout.css" />
+</head>
+<body>
+    <svg width="600" height="400" id="svg"></svg>
+</body>
+
+<script type="text/javascript" src="../d3.js"></script>
+<script>
+    // self executing function here
+    (function() {
+        // your page initialization code here
+        // the DOM will be available here
+
+        var data = [
+            {"value": 10},
+            {"value": 25},
+            {"value": 35},
+            {"value": 10},
+            {"value": 13}
+        ];
+        var r = 150;
+
+        var color = ["limegreen", "darkgreen", "seagreen"];
+
+        var getColor = function (i) {
+            return color[i % color.length];
+        };
+
+        var vis = d3.select("#svg")
+                .data([data]) // an array containing only one element
+                .append("g") // we append one group to the svg document
+                .attr("transform", "translate(" + r + "," + r + ")");
+
+        var arc = d3.svg.arc()
+                .outerRadius(r)
+                .innerRadius(r / 3);
+
+        var pie = d3.layout.pie()
+                .sort(null)
+                .padAngle(Math.PI * 0.023)
+                .value(function (d) {
+                    return d.value; // corresponds to the property of each object
+                });
+
+        // vis element already has the data in it
+        var arcs = vis.selectAll("g.sector") // really good way to select elements
+                .data(pie) // pie returns the data prepared
+                .enter()
+                .append("g")
+                .attr("class", "sector");
+
+        arcs.append("path") // for each element we draw the path
+                .attr("fill", function (d, i) {
+                    return getColor(i);
+                })
+                .attr("d", arc) // arc function returns the corresponding "d" path
+                .attr("opacity", "0.60");
+
+    })();
+</script>
+</html>

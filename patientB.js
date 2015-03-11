@@ -4,7 +4,7 @@
 
 var patient = {};
 
-patient.bloodPressure = new BloodPressure({systolic: 123, diastolic: 80}); // 137, 88
+patient.bloodPressure = new BloodPressure({systolic: 123, diastolic: 80});
 
 patient.fitness = new Fitness({
     restingHeartRate: 68,
