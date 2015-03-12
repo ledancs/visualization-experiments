@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../visualization-layout.css" />
+</head>
+<body>
+<svg width="600" height="600" id="svg"></svg>
+</body>
+
+<script type="text/javascript" src="../d3.js"></script>
+<script>
+    // self executing function here
+    (function() {
+        // your page initialization code here
+        // the DOM will be available here
+
+        var data = [ 10, 15, 25, 20, 12, 16, 12, 13, 17 ];
+
+        var r = 250;
+
+        var color = ["limegreen", "darkgreen", "seagreen"];
+
+        var getColor = function (i) {
+            return color[i % color.length];
+        };
+
+        var svg = d3.select("#svg");
+
+        var arc = d3.svg.arc()
+                .outerRadius(r)
+                .innerRadius(r / 2);
+
+        var pie = d3.layout.pie()
+                .sort(null)
+                .padAngle(Math.PI * 0.023);
+
+        var arcs = svg.selectAll("g.sector")
+                .data(pie(data))
+                .enter()
+                .append("g")
+                .attr("class", "sector")
+                .attr("transform", "translate(" + r + ", " + r + ")");
+
+        arcs.append("path") // for each element we draw the path
+                .attr("fill", function (d, i) {
+                    return getColor(i);
+                })
+                .attr("d", arc) // arc function returns the corresponding "d" path
+                .attr("opacity", "0.50");
+
+    })();
+</script>
+</html>
